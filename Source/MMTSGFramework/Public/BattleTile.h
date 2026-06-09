@@ -18,8 +18,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Components")
-	TileShapeType TileShape;
+	void SetTileShapeType(TileShapeType NewTileShapeType) { TileShape = NewTileShapeType; }
+	void SetGridX(int32 NewGridX) { GridX = NewGridX; }
+	void SetGridY(int32 NewGridY) { GridY = NewGridY; }
+
+	TileShapeType GetTileShapeType() { return TileShape; }
+	int32 GetGridX() { return GridX; }
+	int32 GetGridY() { return GridY; }
+	UStaticMeshComponent* GetTileMesh() {return TileMesh;};
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,6 +33,9 @@ protected:
 
 	UFUNCTION()
 	void UpdateStaticMesh();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Components")
+	TileShapeType TileShape;
 
 	//override of UE constructor
 	virtual void OnConstruction(const FTransform& Transform) override;
