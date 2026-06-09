@@ -42,15 +42,15 @@ void ABattleTile::UpdateStaticMesh()
 {
     switch (TileShape)
     {
-    case TileShapes::Square:
+    case TileShapeType::Square:
         TileMesh->SetStaticMesh(SquareMesh);
         break;
 
-    case TileShapes::HexFlatTop:
+    case TileShapeType::HexFlatTop:
         TileMesh->SetStaticMesh(FlatHexMesh);
         break;
 
-    case TileShapes::HexPointedTop:
+    case TileShapeType::HexPointedTop:
         TileMesh->SetStaticMesh(PointedHexMesh);
         break;
     }
