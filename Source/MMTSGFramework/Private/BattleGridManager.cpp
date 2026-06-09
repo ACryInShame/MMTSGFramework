@@ -87,6 +87,13 @@ void ABattleGridManager::GenerateGrid()
 			CurrentTile->SetGridX(x);
 			CurrentTile->SetGridY(y);
 
+			int32 NumTerrain = static_cast<int32>(ETileTerrainType::MAX) -1;  //grabs last enum which is the highest number but -1 as MAX itself is not a possible option
+			int32 RandomTerrain = FMath::RandRange(0, NumTerrain );
+
+			CurrentTile->SetTerrainType(
+				static_cast<ETileTerrainType>(RandomTerrain)
+			);
+
 			//Spawn Tile at 0.0.0 to be moved later
 			CurrentTile->FinishSpawning(FTransform::Identity);
 

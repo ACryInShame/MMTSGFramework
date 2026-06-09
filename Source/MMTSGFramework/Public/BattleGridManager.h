@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "TileShapeType.h"
 #include "BattleTile.h"
+#include <TileTerrainType.h>
 #include "BattleGridManager.generated.h"
 
 UCLASS()

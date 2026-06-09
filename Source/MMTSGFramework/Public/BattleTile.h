@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TileShapeType.h"
+#include <TileTerrainType.h>
 #include "BattleTile.generated.h"
 
 UCLASS()
@@ -21,11 +22,24 @@ public:
 	void SetTileShapeType(TileShapeType NewTileShapeType) { TileShape = NewTileShapeType; }
 	void SetGridX(int32 NewGridX) { GridX = NewGridX; }
 	void SetGridY(int32 NewGridY) { GridY = NewGridY; }
+	void SetTerrainType(ETileTerrainType NewTerrain) { TerrainType = NewTerrain; }
 
 	TileShapeType GetTileShapeType() { return TileShape; }
 	int32 GetGridX() { return GridX; }
 	int32 GetGridY() { return GridY; }
 	UStaticMeshComponent* GetTileMesh() {return TileMesh;};
+	ETileTerrainType GetTerrainType() { return TerrainType; }
+
+
+	//may change terrain data into a struct later
+	UFUNCTION(BlueprintCallable)
+	FString GetTerrainName() const;
+
+	UFUNCTION(BlueprintCallable)
+	FLinearColor GetTerrainColor() const;
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateTerrainColor();
 
 protected:
 	// Called when the game starts or when spawned
@@ -33,6 +47,12 @@ protected:
 
 	UFUNCTION()
 	void UpdateStaticMesh();
+
+	UPROPERTY()
+	UMaterialInstanceDynamic* DynamicMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Terrain")
+	ETileTerrainType TerrainType = ETileTerrainType::Grass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Components")
 	TileShapeType TileShape;

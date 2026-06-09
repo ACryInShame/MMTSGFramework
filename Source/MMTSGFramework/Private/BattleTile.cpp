@@ -35,6 +35,8 @@ void ABattleTile::OnConstruction(const FTransform& Transform)
     Super::OnConstruction(Transform);
 
     UpdateStaticMesh();
+    DynamicMaterial = TileMesh->CreateAndSetMaterialInstanceDynamic(0);
+    UpdateTerrainColor();
 }
 
 //updated the tile mesh based on the type of tile being spawned
@@ -53,5 +55,47 @@ void ABattleTile::UpdateStaticMesh()
     case TileShapeType::HexPointedTop:
         TileMesh->SetStaticMesh(PointedHexMesh);
         break;
+    }
+}
+
+FString ABattleTile::GetTerrainName() const
+{
+    return UEnum::GetValueAsString(TerrainType);
+}
+
+FLinearColor ABattleTile::GetTerrainColor() const
+{
+    switch (TerrainType)
+    {
+    case ETileTerrainType::Grass:
+        return FLinearColor::Green;
+
+    case ETileTerrainType::Dirt:
+        return FLinearColor(0.5f, 0.25f, 0.0f);
+
+    case ETileTerrainType::Sand:
+        return FLinearColor::Yellow;
+
+    case ETileTerrainType::Water:
+        return FLinearColor::Blue;
+
+    case ETileTerrainType::Forest:
+        return FLinearColor(0.0f, 0.4f, 0.0f);
+
+    case ETileTerrainType::Mountain:
+        return FLinearColor::Gray;
+    }
+
+    return FLinearColor::White;
+}
+
+void ABattleTile::UpdateTerrainColor()
+{
+    if (DynamicMaterial)
+    {
+        DynamicMaterial->SetVectorParameterValue(
+            TEXT("TerrainColor"),
+            GetTerrainColor()
+        );
     }
 }
