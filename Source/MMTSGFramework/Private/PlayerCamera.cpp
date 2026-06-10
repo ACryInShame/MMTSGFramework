@@ -9,34 +9,48 @@ APlayerCamera::APlayerCamera()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Set Default Root Comp
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
+
 	//Set Camera SpringArm
-	CameraSpringArm =
-		CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
+	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
+	CameraSpringArm->SetupAttachment(RootComponent);
 
-	// Create Cmaera
+	// Create and set Camera
 	CameraObject = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-
-	//attach Camera
 	CameraObject->SetupAttachment(CameraSpringArm);
+
+	//Default Values
+	CameraMoveSpeed = 1000.0f; // Speed that camera moves around in Z and Y
+	CamerRotationSpeed = 300.0f; // speed camera rotates around pawn
+	CameraZoomIntervalSpeed = 100.0f; // the distance per 'tick' of zoom
+	CameraZoomMin = 500.0f; // Min distance for boom arm to zoom
+	CameraZoomMax = 3000.0f; // Max distance boom arm can zoom
+	CameraAngle = -65.0f; // angel the boon arm is at from pawn
+
 }
 
 // Called when the game starts or when spawned
 void APlayerCamera::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Set spring arm angle
+	CameraSpringArm->SetRelativeRotation(
+		FRotator(CameraAngle, 0.0f, 0.0f)
+	);
 	
 }
 
 void APlayerCamera::MoveCamera(FVector2D Input)
 {
 	//vector for flat camera movement
-	FVector NewLocation = GetActorLocation();
+	FVector NewDirection = (GetActorForwardVector() * Input.Y) + (GetActorRightVector() * Input.X);
 
-	//Will move Camera Pawn along X and Y axsis
-	NewLocation.X += Input.Y * 10.0f;
-	NewLocation.Y += Input.X * 10.0f;
-
-	SetActorLocation(NewLocation);
+	SetActorLocation(
+		GetActorLocation() +
+		NewDirection * CameraMoveSpeed * GetWorld()->GetDeltaSeconds()
+	);
 }
 
 void APlayerCamera::RotateCamera(float Input)
@@ -44,7 +58,7 @@ void APlayerCamera::RotateCamera(float Input)
 	// set rotation based on player input
 	FRotator Rotation = GetActorRotation();
 
-	Rotation.Yaw += Input * 50.0f * GetWorld()->GetDeltaSeconds();
+	Rotation.Yaw += Input * CamerRotationSpeed * GetWorld()->GetDeltaSeconds();
 
 	SetActorRotation(Rotation);
 }
@@ -59,20 +73,19 @@ void APlayerCamera::ZoomCamera(float Input)
 	}
 
 	// Get New Length
-	float NewLength = CameraSpringArm->TargetArmLength - (Input * 100.0f);
+	float NewLength = CameraSpringArm->TargetArmLength - (Input * CameraZoomIntervalSpeed);
 
 	//Set new Length
 	CameraSpringArm->TargetArmLength = FMath::Clamp(	NewLength,
-												500.0f,
-												3000.0f
-											);
+													CameraZoomMin,
+													CameraZoomMax
+													);
 }
 
 // Called every frame
 void APlayerCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 
 }
 
