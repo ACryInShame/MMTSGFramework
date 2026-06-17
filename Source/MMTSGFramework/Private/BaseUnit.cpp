@@ -32,9 +32,9 @@ void ABaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-int64 ABaseUnit::GetMovementCost(ETileTerrainType)
+int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 {
-	int64 MovementCost = 1;
+	int32 MovementCost = 1;
 
 	return MovementCost;
 }

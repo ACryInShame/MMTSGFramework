@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include <string>
-#include <TileTerrainType.h>
+#include "TileTerrainType.h"
 #include "BaseUnit.generated.h"
 
 UCLASS()
@@ -25,7 +24,7 @@ public:
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
-	int64 GetMovementCost(ETileTerrainType);
+	int32 GetMovementCost(ETileTerrainType InTerrainType);
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,16 +34,22 @@ protected:
 	FString UnitName;
 
 	UPROPERTY(EditAnywhere)
-	int64 CurrentHealth, MaxHealth;
+	int32 CurrentHealth;
 
 	UPROPERTY(EditAnywhere)
-	int64 AttackPower, DefencePoints;
+	int32 MaxHealth;
 
 	UPROPERTY(EditAnywhere)
-	int64 MovementPoints;
+	int32 AttackPower; 
 
 	UPROPERTY(EditAnywhere)
-	TMap<ETileTerrainType, int32>
+	int32 DefencePoints;
+
+	UPROPERTY(EditAnywhere)
+	int32 MovementPoints;
+
+	UPROPERTY(EditAnywhere)
+	TMap<ETileTerrainType, int32> MovementCosts;
 
 
 };
