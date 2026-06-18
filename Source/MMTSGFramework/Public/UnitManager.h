@@ -48,4 +48,7 @@ protected:
 
 	//UFUNCTION(BlueprintCallable)
 	//ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform);
+
+	UFUNCTION(BlueprintCallable)
+	void HandleUnitDefeated(ABaseUnit* DefeatedUnit);
 };

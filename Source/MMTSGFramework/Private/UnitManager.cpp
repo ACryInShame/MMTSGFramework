@@ -18,6 +18,15 @@ void AUnitManager::BeginPlay()
 	
 }
 
+void AUnitManager::HandleUnitDefeated(ABaseUnit* DefeatedUnit)
+{
+	// remove unit from unit list
+	Units.Remove(DefeatedUnit);
+
+	// destory pawn
+	DefeatedUnit->Destroy();
+}
+
 // Called every frame
 void AUnitManager::Tick(float DeltaTime)
 {
@@ -66,6 +75,9 @@ ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClas
 	if (NewUnit)
 		Units.Add(NewUnit);
 	NewUnit->Initalize(BattleGrid->GetTileByCoords(GridX,GridY));
+
+	//sunscribe to unit Defeat Event
+	NewUnit->OnUnitDefeated.AddDynamic(this, &AUnitManager::HandleUnitDefeated);
 
 	return NewUnit;
 }

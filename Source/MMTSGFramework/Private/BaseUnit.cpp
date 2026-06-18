@@ -54,6 +54,9 @@ int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 void ABaseUnit::ApplyDamage(int32 Amount)
 {
 	CurrentHealth -= Amount;
+
+	if (CurrentHealth <= 0)
+		DefeatUnit();
 }
 
 int32 ABaseUnit::DealDamage()
@@ -67,6 +70,11 @@ int32 ABaseUnit::DealDamage()
 
 	UE_LOG(LogTemp, Log, TEXT("%s"), AttackMessage);*/
 	return AttackPower;
+}
+
+void ABaseUnit::DefeatUnit()
+{
+	OnUnitDefeated.Broadcast(this);
 }
 
 //void ABaseUnit::MoveTo(FTransform Destination)

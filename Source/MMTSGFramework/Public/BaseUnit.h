@@ -8,6 +8,12 @@
 #include "BattleTile.h"
 #include "BaseUnit.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
+	FOnUnitDefeated,
+	ABaseUnit*,
+	DefeatedUnit
+);
+
 UCLASS()
 class MMTSGFRAMEWORK_API ABaseUnit : public APawn
 {
@@ -32,6 +38,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int32 DealDamage();
+
+	UFUNCTION(BlueprintCallable)
+	void DefeatUnit();
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnUnitDefeated OnUnitDefeated;
 
 	//Unit ------------Movement----------------
 	//UFUNCTION(BlueprintCallable)
