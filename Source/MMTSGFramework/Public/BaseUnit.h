@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "TileTerrainType.h"
+#include "BattleTile.h"
 #include "BaseUnit.generated.h"
 
 UCLASS()
@@ -26,30 +27,37 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetMovementCost(ETileTerrainType InTerrainType);
 
+	UFUNCTION(BlueprintCallable)
+	void TakeDamage(int32 Amount);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY (EditAnywhere)
+	//Unit ------------Attributes----------------
+	UPROPERTY (EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	FString UnitName;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	int32 CurrentHealth;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	int32 MaxHealth;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	int32 AttackPower; 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	int32 DefencePoints;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	int32 MovementPoints;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	TMap<ETileTerrainType, int32> MovementCosts;
 
+	//Unit Current Location
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	ABattleTile* CurrentTile;
 
 };

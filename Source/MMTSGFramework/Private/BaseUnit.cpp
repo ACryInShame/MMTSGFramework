@@ -39,3 +39,8 @@ int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 	return MovementCost;
 }
 
+void ABaseUnit::TakeDamage(int32 Amount)
+{
+	CurrentHealth -= Amount;
+}
+
