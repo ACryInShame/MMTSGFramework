@@ -24,7 +24,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnUnit();
+	ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform);
 
 	UFUNCTION(BlueprintCallable)
 	void DestroyUnit();
@@ -33,7 +33,7 @@ public:
 	void GetUnitByID();
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnUnitOnGridBuCoords(ABaseUnit* NewUnit,int32 X, int32 Y);
+	void SpawnUnitOnGridBuCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY);
 
 	//RegisterUnit()
 	//UnregisterUnit()

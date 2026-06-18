@@ -32,8 +32,14 @@ void AUnitManager::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
-void AUnitManager::SpawnUnit()
+ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform)
 {
+	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, SpawnTransform);
+
+	if (NewUnit)
+		Units.Add(NewUnit);
+
+	return NewUnit;
 }
 
 void AUnitManager::DestroyUnit()
@@ -44,7 +50,14 @@ void AUnitManager::GetUnitByID()
 {
 }
 
-void AUnitManager::SpawnUnitOnGridBuCoords(ABaseUnit* NewUnit, int32 X, int32 Y)
+void AUnitManager::SpawnUnitOnGridBuCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
 {
-	
+	if (!BattleGrid)
+	{
+		return;
+	}
+
+	FTransform UnitSpawnTransform = BattleGrid->GetTileSpawnLocation(GridX, GridY);
+
+	SpawnUnit(UnitClass, UnitSpawnTransform);
 }
