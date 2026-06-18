@@ -177,3 +177,22 @@ bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y)
 	return true;
 }
 
+FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
+{
+	ABattleTile* CurrentTile = GetTileByCoords(X,Y);
+
+	if (!CurrentTile)
+	{
+		UE_LOG(
+			LogTemp,
+			Error,
+			TEXT("Attempted to spawn unit at invalid coordinates (%d,%d)"),
+			X,
+			Y
+		);
+		return FTransform::Identity;
+	}
+	else
+		return CurrentTile->GetUnitAnchorTransform();
+}
+

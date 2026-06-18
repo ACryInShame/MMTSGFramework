@@ -33,6 +33,10 @@ public:
 	//check if coords are in grid or not
 	bool ValidCoordsInGrid(int32 X, int32 Y);
 
+	UFUNCTION(BlueprintCallable)
+	//returns Tile at Coords
+	FTransform GetTileSpawnLocation(int32 X, int32 Y);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -28,7 +28,10 @@ public:
 	int32 GetMovementCost(ETileTerrainType InTerrainType);
 
 	UFUNCTION(BlueprintCallable)
-	void TakeDamage(int32 Amount);
+	void ApplyDamage(int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	int32 DealDamage();
 
 protected:
 	// Called when the game starts or when spawned

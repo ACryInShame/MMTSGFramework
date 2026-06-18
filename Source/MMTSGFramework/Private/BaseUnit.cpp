@@ -39,8 +39,21 @@ int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 	return MovementCost;
 }
 
-void ABaseUnit::TakeDamage(int32 Amount)
+void ABaseUnit::ApplyDamage(int32 Amount)
 {
 	CurrentHealth -= Amount;
+}
+
+int32 ABaseUnit::DealDamage()
+{
+	//log attack infomration
+	/*FString AttackMessage = FString::Printf(
+		TEXT("%s attacks with power of %d"),
+		UnitName,
+		AttackPower
+	);
+
+	UE_LOG(LogTemp, Log, TEXT("%s"), AttackMessage);*/
+	return AttackPower;
 }
 
