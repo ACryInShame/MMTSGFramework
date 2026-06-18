@@ -27,11 +27,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	//returns Tile at Coords
-	ABattleTile* GetTileByCoords(int32 X, int32 Y);
+	ABattleTile* GetTileByCoords(int32 X, int32 Y) const;
 
 	UFUNCTION(BlueprintCallable)
 	//check if coords are in grid or not
-	bool ValidCoordsInGrid(int32 X, int32 Y);
+	bool ValidCoordsInGrid(int32 X, int32 Y) const;
 
 	UFUNCTION(BlueprintCallable)
 	//returns Tile at Coords

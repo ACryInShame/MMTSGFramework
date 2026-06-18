@@ -153,7 +153,7 @@ void ABattleGridManager::GenerateGrid()
 	}
 }
 
-ABattleTile* ABattleGridManager::GetTileByCoords(int32 X, int32 Y)
+ABattleTile* ABattleGridManager::GetTileByCoords(int32 X, int32 Y) const
 {
 	// check if valid grid location and if location is in battlegrid
 	if (!ValidCoordsInGrid(X, Y))
@@ -167,7 +167,7 @@ ABattleTile* ABattleGridManager::GetTileByCoords(int32 X, int32 Y)
 	return BattleGrid[Index];
 }
 
-bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y)
+bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y) const
 {
 	if (X <= 0 || Y <= 0)
 		return false;

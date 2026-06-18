@@ -32,15 +32,16 @@ void AUnitManager::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
-ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform)
-{
-	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, SpawnTransform);
-
-	if (NewUnit)
-		Units.Add(NewUnit);
-
-	return NewUnit;
-}
+//ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform)
+//{
+//	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, SpawnTransform);
+//
+//	if (NewUnit)
+//		Units.Add(NewUnit);
+//	NewUnit->Initalize();
+//
+//	return NewUnit;
+//}
 
 void AUnitManager::DestroyUnit()
 {
@@ -50,14 +51,21 @@ void AUnitManager::GetUnitByID()
 {
 }
 
-void AUnitManager::SpawnUnitOnGridBuCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
+ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
 {
 	if (!BattleGrid)
 	{
-		return;
+		return nullptr;
 	}
 
 	FTransform UnitSpawnTransform = BattleGrid->GetTileSpawnLocation(GridX, GridY);
 
-	SpawnUnit(UnitClass, UnitSpawnTransform);
+
+	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnTransform);
+
+	if (NewUnit)
+		Units.Add(NewUnit);
+	NewUnit->Initalize(BattleGrid->GetTileByCoords(GridX,GridY));
+
+	return NewUnit;
 }

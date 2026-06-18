@@ -22,16 +22,27 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	//return the cost to move into a particular terrian type
+	//Unit ------------Initalization----------------
 	UFUNCTION(BlueprintCallable)
-	int32 GetMovementCost(ETileTerrainType InTerrainType);
+	void Initalize(ABattleTile* StartingLocation);
 
+	//Unit ------------Combat----------------
 	UFUNCTION(BlueprintCallable)
 	void ApplyDamage(int32 Amount);
 
 	UFUNCTION(BlueprintCallable)
 	int32 DealDamage();
+
+	//Unit ------------Movement----------------
+	//UFUNCTION(BlueprintCallable)
+	//void MoveTo(FTransform Destination);
+
+	UFUNCTION(BlueprintCallable)
+	void MoveToTile(ABattleTile* Destination);
+
+	//return the cost to move into a particular terrian type
+	UFUNCTION(BlueprintCallable)
+	int32 GetMovementCost(ETileTerrainType InTerrainType);
 
 protected:
 	// Called when the game starts or when spawned
@@ -59,8 +70,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	TMap<ETileTerrainType, int32> MovementCosts;
 
-	//Unit Current Location
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	//Unit ------------Current Location------------
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "Attribute")
 	ABattleTile* CurrentTile;
+
+	//Unit ------------Movement----------------
+	//FTransform TargetDestination;
+	ABattleTile* TargetDestination;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	float MoveSpeed = 300.0f;
+
+	void UpdateMovement(float DeltaTime);
+	void MovementComplete();
 
 };

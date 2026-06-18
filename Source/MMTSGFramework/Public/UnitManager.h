@@ -24,16 +24,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable)
-	ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform);
-
-	UFUNCTION(BlueprintCallable)
 	void DestroyUnit();
 
 	UFUNCTION(BlueprintCallable)
 	void GetUnitByID();
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnUnitOnGridBuCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY);
+	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY);
 
 	//RegisterUnit()
 	//UnregisterUnit()
@@ -43,9 +40,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Units")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
 	TArray<ABaseUnit*> Units;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Grid")
 	ABattleGridManager* BattleGrid;
+
+	//UFUNCTION(BlueprintCallable)
+	//ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform);
 };
