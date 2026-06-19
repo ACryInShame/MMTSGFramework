@@ -4,9 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include <string>
-#include <TileTerrainType.h>
+#include "TileTerrainType.h"
+#include "BattleTile.h"
 #include "BaseUnit.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
+	FOnUnitDefeated,
+	ABaseUnit*,
+	DefeatedUnit
+);
 
 UCLASS()
 class MMTSGFRAMEWORK_API ABaseUnit : public APawn
@@ -22,29 +28,72 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//Unit ------------Initalization----------------
+	UFUNCTION(BlueprintCallable)
+	void Initalize(ABattleTile* StartingLocation);
+
+	//Unit ------------Combat----------------
+	UFUNCTION(BlueprintCallable)
+	void ApplyDamage(int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	int32 DealDamage();
+
+	UFUNCTION(BlueprintCallable)
+	void DefeatUnit();
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnUnitDefeated OnUnitDefeated;
+
+	//Unit ------------Movement----------------
+	//UFUNCTION(BlueprintCallable)
+	//void MoveTo(FTransform Destination);
+
+	UFUNCTION(BlueprintCallable)
+	void MoveToTile(ABattleTile* Destination);
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
-	int64 GetMovementCost(ETileTerrainType);
+	int32 GetMovementCost(ETileTerrainType InTerrainType);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY (EditAnywhere)
+	//Unit ------------Attributes----------------
+	UPROPERTY (EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	FString UnitName;
 
-	UPROPERTY(EditAnywhere)
-	int64 CurrentHealth, MaxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	int32 CurrentHealth;
 
-	UPROPERTY(EditAnywhere)
-	int64 AttackPower, DefencePoints;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	int32 MaxHealth;
 
-	UPROPERTY(EditAnywhere)
-	int64 MovementPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	int32 AttackPower; 
 
-	UPROPERTY(EditAnywhere)
-	TMap<ETileTerrainType, int32>
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	int32 DefencePoints;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	int32 MovementPoints;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	TMap<ETileTerrainType, int32> MovementCosts;
+
+	//Unit ------------Current Location------------
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "Attribute")
+	ABattleTile* CurrentTile;
+
+	//Unit ------------Movement----------------
+	//FTransform TargetDestination;
+	ABattleTile* TargetDestination;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	float MoveSpeed = 300.0f;
+
+	void UpdateMovement(float DeltaTime);
+	void MovementComplete();
 
 };

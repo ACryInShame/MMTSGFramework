@@ -30,6 +30,8 @@ public:
 	UStaticMeshComponent* GetTileMesh() {return TileMesh;};
 	ETileTerrainType GetTerrainType() { return TerrainType; }
 
+	UFUNCTION(BlueprintCallable)
+	FTransform GetUnitAnchorTransform() const;
 
 	//may change terrain data into a struct later
 	UFUNCTION(BlueprintCallable)
@@ -51,10 +53,10 @@ protected:
 	UPROPERTY()
 	UMaterialInstanceDynamic* DynamicMaterial;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Terrain")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 	ETileTerrainType TerrainType = ETileTerrainType::Grass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Attributes")
 	TileShapeType TileShape;
 
 	//override of UE constructor
@@ -77,5 +79,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "TileTypes")
 	UStaticMesh* PointedHexMesh;
+
 
 };

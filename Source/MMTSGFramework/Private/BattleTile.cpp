@@ -58,6 +58,26 @@ void ABattleTile::UpdateStaticMesh()
     }
 }
 
+FTransform ABattleTile::GetUnitAnchorTransform() const
+{
+    if (!TileMesh)
+    {
+        return FTransform::Identity;
+    }
+
+    FVector Min;
+    FVector Max;
+
+    TileMesh->GetLocalBounds(Min, Max);
+
+    FVector AnchorLocation = GetActorLocation();
+
+    // Move to top of mesh
+    AnchorLocation.Z += Max.Z;
+
+    return FTransform(AnchorLocation);
+}
+
 FString ABattleTile::GetTerrainName() const
 {
     return UEnum::GetValueAsString(TerrainType);
