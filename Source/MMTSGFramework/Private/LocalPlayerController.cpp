@@ -60,6 +60,11 @@ void ALocalPlayerController::HandleMouseClick()
         );
 
         SelectTile(NewSelectedTile);
+
+        if (SelectedUnit)
+        {
+            SelectedUnit->MoveToTile(NewSelectedTile);
+        }
     }
 }
 
