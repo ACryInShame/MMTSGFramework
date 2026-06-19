@@ -8,11 +8,14 @@
 #include "BattleTile.h"
 #include "BaseUnit.generated.h"
 
+class ABaseUnit;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 	FOnUnitDefeated,
 	ABaseUnit*,
 	DefeatedUnit
 );
+
 
 UCLASS()
 class MMTSGFRAMEWORK_API ABaseUnit : public APawn
@@ -31,6 +34,19 @@ public:
 	//Unit ------------Initalization----------------
 	UFUNCTION(BlueprintCallable)
 	void Initalize(ABattleTile* StartingLocation);
+
+	//Unit ------------Gets/Sets----------------
+	UFUNCTION(BlueprintCallable)
+	ABattleTile* GetCurrentTile() { return CurrentTile; }
+	UFUNCTION(BlueprintCallable)
+	int32 GetMovementPoints() { return MovementPoints; }
+	UFUNCTION(BlueprintCallable)
+	FString GetUnitName() { return UnitName; }
+	UFUNCTION(BlueprintCallable)
+	int32 GetCurrentHealth() { return CurrentHealth; }
+	UFUNCTION(BlueprintCallable)
+	int32 GetMaxHealth() { return MaxHealth; }
+
 
 	//Unit ------------Combat----------------
 	UFUNCTION(BlueprintCallable)
