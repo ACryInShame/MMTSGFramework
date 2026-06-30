@@ -112,6 +112,10 @@ void ABaseUnit::MovementComplete()
 {
 	//Snap unit to anchor point
 	SetActorLocation( TargetDestination->GetUnitAnchorTransform().GetLocation() );
+
+	//update unit and tile occupation information
+	CurrentTile->SetOccupyingUnit(nullptr);
 	CurrentTile = TargetDestination;
 	TargetDestination = nullptr;
+	CurrentTile->SetOccupyingUnit(this);
 }

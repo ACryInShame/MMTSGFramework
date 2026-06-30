@@ -37,6 +37,7 @@ void ABattleTile::OnConstruction(const FTransform& Transform)
     UpdateStaticMesh();
     DynamicMaterial = TileMesh->CreateAndSetMaterialInstanceDynamic(0);
     UpdateTerrainColor();
+    OccupyingUnit = nullptr;
 }
 
 //updated the tile mesh based on the type of tile being spawned

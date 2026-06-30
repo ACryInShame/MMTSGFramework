@@ -69,11 +69,19 @@ ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClas
 
 	FTransform UnitSpawnTransform = BattleGrid->GetTileSpawnLocation(GridX, GridY);
 
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnTransform);
+	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnTransform, SpawnParams);
 
-	if (NewUnit)
-		Units.Add(NewUnit);
+	if (!NewUnit)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to spawn unit."));
+		return nullptr;
+	}
+
+	Units.Add(NewUnit);
 	NewUnit->Initalize(BattleGrid->GetTileByCoords(GridX,GridY));
 
 	//sunscribe to unit Defeat Event
