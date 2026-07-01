@@ -31,13 +31,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//Unit ------------Initalization----------------
-	UFUNCTION(BlueprintCallable)
-	void Initalize(ABattleTile* StartingLocation);
+	////Unit ------------Initalization----------------
+	//UFUNCTION(BlueprintCallable)
+	//void Initalize(ABattleTile* StartingLocation);
 
 	//Unit ------------Gets/Sets----------------
-	UFUNCTION(BlueprintCallable)
-	ABattleTile* GetCurrentTile() { return CurrentTile; }
+	//UFUNCTION(BlueprintCallable)
+	//ABattleTile* GetCurrentTile() { return CurrentTile; }
 	UFUNCTION(BlueprintCallable)
 	int32 GetMovementPoints() { return MovementPoints; }
 	UFUNCTION(BlueprintCallable)
@@ -98,9 +98,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	TMap<ETileTerrainType, int32> MovementCosts;
 
-	//Unit ------------Current Location------------
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "Attribute")
-	ABattleTile* CurrentTile;
+	////Unit ------------Current Location------------
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "Attribute")
+	//ABattleTile* CurrentTile;
 
 	//Unit ------------Movement----------------
 	//FTransform TargetDestination;

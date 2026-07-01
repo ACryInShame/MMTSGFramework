@@ -60,23 +60,18 @@ void AUnitManager::GetUnitByID()
 {
 }
 
-ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
+ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SpawnUnitOnGridByCoords called."));
-	if (!BattleGrid)
-	{
-		UE_LOG(LogTemp, Error, TEXT("BattleGrid not assigned"));
-		return nullptr;
-	}
-
-	FTransform UnitSpawnTransform = BattleGrid->GetTileSpawnLocation(GridX, GridY);
-
+	//Set spawn Params to always spawn unit. This allows units to spawn even if they slightly overlap terrain
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnTransform, SpawnParams);
+	//Spawn Unit
+	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnLocationTransform, SpawnParams);
 
+
+	//If unit spawn fails, send log and return null pointer
 	if (!NewUnit)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to spawn unit."));
@@ -84,7 +79,6 @@ ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClas
 	}
 
 	Units.Add(NewUnit);
-	NewUnit->Initalize(BattleGrid->GetTileByCoords(GridX,GridY));
 
 	//sunscribe to unit Defeat Event
 	NewUnit->OnUnitDefeated.AddDynamic(this, &AUnitManager::HandleUnitDefeated);

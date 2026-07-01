@@ -23,7 +23,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	// creates a x by y grid based on SizeX and SizeY variables
-	void GenerateGrid();
+	//void GenerateGrid();
+	void GenerateGrid(int32 NewSizeX, int32 NewSizeY, TileShapeType TileShape);
 
 	UFUNCTION(BlueprintCallable)
 	//returns Tile at Coords
@@ -37,9 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool ValidTile(ABattleTile* Tile);
 
-	UFUNCTION(BlueprintCallable)
-	//returns Tile at Coords
-	FTransform GetTileSpawnLocation(int32 X, int32 Y);
+	//UFUNCTION(BlueprintCallable)
+	////returns Tile at Coords
+	//FTransform GetTileSpawnLocation(int32 X, int32 Y);
 
 	UFUNCTION(BlueprintCallable)
 	TArray<ABattleTile*> GetTileNeighbors(ABattleTile* Tile);

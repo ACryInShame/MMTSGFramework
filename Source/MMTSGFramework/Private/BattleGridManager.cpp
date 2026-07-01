@@ -25,8 +25,16 @@ void ABattleGridManager::Tick(float DeltaTime)
 
 }
 
-void ABattleGridManager::GenerateGrid()
+//void ABattleGridManager::GenerateGrid()
+
+void ABattleGridManager::GenerateGrid(int32 NewSizeX, int32 NewSizeY,TileShapeType NewTileShape)
 {
+	//Set size and shape
+	SizeX = NewSizeX;
+	SizeY = NewSizeY;
+	GridTileType = NewTileShape;
+	 
+	
 	//Set starting spawn point
 	FVector GridStartingSpawn = FVector::ZeroVector;
 
@@ -188,24 +196,24 @@ bool ABattleGridManager::ValidTile(ABattleTile* Tile)
 	return BattleGrid.Contains(Tile);
 }
 
-FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
-{
-	ABattleTile* CurrentTile = GetTileByCoords(X,Y);
-
-	if (!CurrentTile)
-	{
-		UE_LOG(
-			LogTemp,
-			Error,
-			TEXT("Attempted to spawn unit at invalid coordinates (%d,%d)"),
-			X,
-			Y
-		);
-		return FTransform::Identity;
-	}
-	else
-		return CurrentTile->GetUnitAnchorTransform();
-}
+//FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
+//{
+//	ABattleTile* CurrentTile = GetTileByCoords(X,Y);
+//
+//	if (!CurrentTile)
+//	{
+//		UE_LOG(
+//			LogTemp,
+//			Error,
+//			TEXT("Attempted to spawn unit at invalid coordinates (%d,%d)"),
+//			X,
+//			Y
+//		);
+//		return FTransform::Identity;
+//	}
+//	else
+//		return CurrentTile->GetUnitAnchorTransform();
+//}
 
 TArray<ABattleTile*> ABattleGridManager::GetTileNeighbors(ABattleTile* Tile)
 {

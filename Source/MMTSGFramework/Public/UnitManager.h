@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include <BaseUnit.h>
-#include <BattleGridManager.h>
 #include "UnitManager.generated.h"
 
 UCLASS()
@@ -30,10 +29,7 @@ public:
 	void GetUnitByID();
 
 	UFUNCTION(BlueprintCallable)
-	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY);
-
-	//RegisterUnit()
-	//UnregisterUnit()
+	ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform);
 
 
 protected:
@@ -42,12 +38,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
 	TArray<ABaseUnit*> Units;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"), Category = "Grid")
-	ABattleGridManager* BattleGrid;
-
-	//UFUNCTION(BlueprintCallable)
-	//ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform);
 
 	UFUNCTION(BlueprintCallable)
 	void HandleUnitDefeated(ABaseUnit* DefeatedUnit);

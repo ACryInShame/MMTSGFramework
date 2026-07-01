@@ -39,10 +39,10 @@ void ABaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ABaseUnit::Initalize(ABattleTile* StartingLocation)
-{
-	CurrentTile = StartingLocation;
-}
+//void ABaseUnit::Initalize(ABattleTile* StartingLocation)
+//{
+//	CurrentTile = StartingLocation;
+//}
 
 int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 {
@@ -113,9 +113,9 @@ void ABaseUnit::MovementComplete()
 	//Snap unit to anchor point
 	SetActorLocation( TargetDestination->GetUnitAnchorTransform().GetLocation() );
 
-	//update unit and tile occupation information
-	CurrentTile->SetOccupyingUnit(nullptr);
-	CurrentTile = TargetDestination;
-	TargetDestination = nullptr;
-	CurrentTile->SetOccupyingUnit(this);
+	////update unit and tile occupation information
+	//CurrentTile->SetOccupyingUnit(nullptr);
+	//CurrentTile = TargetDestination;
+	//TargetDestination = nullptr;
+	//CurrentTile->SetOccupyingUnit(this);
 }

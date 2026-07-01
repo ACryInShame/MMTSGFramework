@@ -38,16 +38,16 @@ void ALocalPlayerController::HandleMouseClick()
 
         SelectUnit(NewSelectedUnit);
 
-        ABattleTile* NewSelectedTile = NewSelectedUnit->GetCurrentTile();
+        //ABattleTile* NewSelectedTile = NewSelectedUnit->GetCurrentTile();
 
-        UE_LOG(
-            LogTemp,
-            Log,
-            TEXT("Selected Tile: %s"),
-            *NewSelectedTile->GetFName().ToString()
-        );
+        //UE_LOG(
+        //    LogTemp,
+        //    Log,
+        //    TEXT("Selected Tile: %s"),
+        //    *NewSelectedTile->GetFName().ToString()
+        //);
 
-        SelectTile(NewSelectedUnit->GetCurrentTile());
+        //SelectTile(NewSelectedUnit->GetCurrentTile());
     }
 
     if (ABattleTile* NewSelectedTile = Cast<ABattleTile>(Hit.GetActor()))
