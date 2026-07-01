@@ -62,8 +62,10 @@ void AUnitManager::GetUnitByID()
 
 ABaseUnit* AUnitManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SpawnUnitOnGridByCoords called."));
 	if (!BattleGrid)
 	{
+		UE_LOG(LogTemp, Error, TEXT("BattleGrid not assigned"));
 		return nullptr;
 	}
 

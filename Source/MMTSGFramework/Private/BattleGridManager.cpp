@@ -169,12 +169,23 @@ ABattleTile* ABattleGridManager::GetTileByCoords(int32 X, int32 Y) const
 
 bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y) const
 {
-	if (X <= 0 || Y <= 0)
+	if (X < 0 || Y < 0)
 		return false;
-	if (X > SizeX || Y > SizeY)
+	if (X >= SizeX || Y >= SizeY)
 		return false;
 
 	return true;
+}
+
+bool ABattleGridManager::ValidTile(ABattleTile* Tile)
+{
+	//is input valid
+	if (!Tile)
+	{
+		return false;
+	}
+
+	return BattleGrid.Contains(Tile);
 }
 
 FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
@@ -194,5 +205,83 @@ FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
 	}
 	else
 		return CurrentTile->GetUnitAnchorTransform();
+}
+
+TArray<ABattleTile*> ABattleGridManager::GetTileNeighbors(ABattleTile* Tile)
+{
+	TArray<ABattleTile*> NeighboringTiles;
+
+	//check if tile is in the grid
+	if (!ValidTile(Tile))
+	{
+		//return a blank array if tile is not in the battlegrid
+		return NeighboringTiles;
+	}
+
+	//temp hold grid coords
+	int CurrentTileGridX, CurrentTileGridY;
+	CurrentTileGridX = Tile->GetGridX();
+	CurrentTileGridY = Tile->GetGridY();
+
+	//Use offset grid based on tile type
+	TArray<FIntPoint> GridOffsets;
+	switch (GridTileType)
+	{
+	case TileShapeType::Square:
+		GridOffsets = SquareOffsets;
+		break;
+
+	case TileShapeType::HexFlatTop:
+		if (CurrentTileGridX % 2 == 0)
+		{
+			GridOffsets = EvenColumnOffsets;
+		}
+		else
+		{
+			GridOffsets = OddColumnOffsets;
+		}
+		break;
+
+	case TileShapeType::HexPointedTop:
+		if (CurrentTileGridY % 2 == 0)
+		{
+			GridOffsets = EvenRowOffsets;
+		}
+		else
+		{
+			GridOffsets = OddRowOffsets;
+		}
+		break;
+	}
+
+	for (const FIntPoint& Offset : GridOffsets)
+	{
+		ABattleTile* TempTile = GetTileByCoords(CurrentTileGridX + Offset.X, CurrentTileGridY + Offset.Y);
+
+		if (ValidTile(TempTile))
+			NeighboringTiles.Add(TempTile);
+	}
+
+
+	return NeighboringTiles;
+}
+
+float ABattleGridManager::GetDistanceBetweenTiles(ABattleTile* StartTile, ABattleTile* EndTile)
+{
+	return FMath::Abs(StartTile->GetGridX() - EndTile->GetGridX()) +
+			FMath::Abs(StartTile->GetGridY() - EndTile->GetGridY());
+}
+
+void ABattleGridManager::ClearHighlightedTiles()
+{
+	for(ABattleTile* CurrentTile: BattleGrid)
+	{
+		if (CurrentTile) //validity check for pointer to avoid crashes
+			CurrentTile->ClearHighlight();
+		else
+		{
+			UE_LOG(	LogTemp,Error,TEXT("Failed to find tile during CLearHighlightTiles() ") );
+		}
+	}
 }
 

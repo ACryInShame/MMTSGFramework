@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "TileShapeType.h"
 #include "BattleTile.h"
-#include <TileTerrainType.h>
+#include "TileTerrainType.h"
 #include "BattleGridManager.generated.h"
 
 UCLASS()
@@ -33,9 +33,22 @@ public:
 	//check if coords are in grid or not
 	bool ValidCoordsInGrid(int32 X, int32 Y) const;
 
+	//Check if tile is valid in the grid
+	UFUNCTION(BlueprintCallable)
+	bool ValidTile(ABattleTile* Tile);
+
 	UFUNCTION(BlueprintCallable)
 	//returns Tile at Coords
 	FTransform GetTileSpawnLocation(int32 X, int32 Y);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<ABattleTile*> GetTileNeighbors(ABattleTile* Tile);
+
+	UFUNCTION(BlueprintCallable)
+	float GetDistanceBetweenTiles(ABattleTile* StartTile, ABattleTile* EndTile);
+
+	UFUNCTION(BlueprintCallable)
+	void ClearHighlightedTiles();
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,5 +68,67 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Grid")
 	TSubclassOf<ABattleTile> TileBPClass;
+
+	//----- Grid Offset Arrays ------
+	const TArray<FIntPoint> SquareOffsets =
+	{
+		{ 0,  1},
+		{ 1,  0},
+		{ 0, -1},
+		{-1,  0}
+	};
+
+	//Pointed Hex
+	const TArray<FIntPoint> OddRowOffsets =
+	{
+		{ 0,-1}, // NW
+		{ 1,-1}, // NE
+		{-1, 0}, // W
+		{ 1, 0}, // E
+		{ 0, 1}, // SW
+		{ 1, 1}  // SE
+	};
+
+	const TArray<FIntPoint> EvenRowOffsets =
+	{
+		{-1,-1}, // NW
+		{ 0,-1}, // NE
+		{-1, 0}, // W
+		{ 1, 0}, // E
+		{-1, 1}, // SW
+		{ 0, 1}  // SE
+	};
+
+	//Flat Hex
+	const TArray<FIntPoint> OddColumnOffsets =
+	{
+		{-1, 0}, // NW
+		{ 0,-1}, // NE
+		{-1, 1}, // W
+		{ 1, 1}, // E
+		{ 0, 1}, // SW
+		{ 1, 0}  // SE
+	};
+
+	const TArray<FIntPoint> EvenColumnOffsets =
+	{
+		{ 0,-1}, //N
+		{ 0,+1}, //S
+		{+1,-1}, //NE
+		{+1, 0}, //SE
+		{-1, 0}, //SW
+		{-1,-1} //NW
+
+
+
+		//{-1,-1}, // NW
+		//{ 0,-1}, // NE
+		//{-1, 0}, // W
+		//{ 1, 0}, // E
+		//{ 0, 1}, // SW
+		//{ 1, 1}  // SE
+	};
+
+
 
 };

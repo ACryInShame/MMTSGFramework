@@ -36,8 +36,45 @@ void ABattleTile::OnConstruction(const FTransform& Transform)
 
     UpdateStaticMesh();
     DynamicMaterial = TileMesh->CreateAndSetMaterialInstanceDynamic(0);
-    UpdateTerrainColor();
+    UpdateMaterial();
     OccupyingUnit = nullptr;
+}
+
+void ABattleTile::UpdateMaterial()
+{
+    if (!DynamicMaterial)
+    {
+        return;
+    }
+
+    //update Material Color
+    DynamicMaterial->SetVectorParameterValue(
+        TEXT("TerrainColor"),
+        GetTerrainColor()
+    );
+
+    switch (HighLightState)
+    {
+    case ETileHighlightState::None:
+        DynamicMaterial->SetScalarParameterValue("HighlightStrength", 0.f);
+        break;
+
+    case ETileHighlightState::Selected:
+        DynamicMaterial->SetVectorParameterValue("HighlightColor", FLinearColor::Yellow);
+        DynamicMaterial->SetScalarParameterValue("HighlightStrength", 0.5f);
+        break;
+
+    case ETileHighlightState::MoveRange:
+        DynamicMaterial->SetVectorParameterValue("HighlightColor", FLinearColor::Blue);
+        DynamicMaterial->SetScalarParameterValue("HighlightStrength", 0.5f);
+        break;
+    }
+}
+
+void ABattleTile::ClearHighlight()
+{
+    HighLightState = ETileHighlightState::None;
+    UpdateMaterial();
 }
 
 //updated the tile mesh based on the type of tile being spawned
@@ -108,15 +145,4 @@ FLinearColor ABattleTile::GetTerrainColor() const
     }
 
     return FLinearColor::White;
-}
-
-void ABattleTile::UpdateTerrainColor()
-{
-    if (DynamicMaterial)
-    {
-        DynamicMaterial->SetVectorParameterValue(
-            TEXT("TerrainColor"),
-            GetTerrainColor()
-        );
-    }
 }
