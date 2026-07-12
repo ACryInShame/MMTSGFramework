@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BattleGridManager.h"
-#include "UnitManager.h"
+#include "InputAction.h"
+#include <BattleGridManager.h>
+#include <UnitManager.h>
+#include "ETileHighlightState.h"
 #include "BattleManager.generated.h"
 
 UCLASS()
@@ -30,6 +32,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 CoordsX, int32 CoordsY);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<ABattleTile*> GetMovementRange(ABaseUnit* TargetUnit);
+
+	//Command a unit to move to a tile, returns true or flase if unit was able to move to location
+	UFUNCTION(BlueprintCallable)
+	bool MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile);
+
+	UFUNCTION(BlueprintCallable)
+	void HightlightMoveRange(ABaseUnit* MovingUnit);
+
+	UFUNCTION(BlueprintCallable)
+	ABattleTile* GetTileOfUnit(ABaseUnit* Unit);
 
 protected:
 	// Called when the game starts or when spawned

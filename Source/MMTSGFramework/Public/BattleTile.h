@@ -69,8 +69,8 @@ protected:
 	//override of UE constructor
 	virtual void OnConstruction(const FTransform& Transform) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Occupency")
-	ABaseUnit* OccupyingUnit;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Occupancy")
+	ABaseUnit* OccupyingUnit = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* TileMesh;

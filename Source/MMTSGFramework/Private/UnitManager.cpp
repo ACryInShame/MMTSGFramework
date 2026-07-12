@@ -60,7 +60,7 @@ void AUnitManager::GetUnitByID()
 {
 }
 
-ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform)
+ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform, FIntPoint GridCoords)
 {
 	//Set spawn Params to always spawn unit. This allows units to spawn even if they slightly overlap terrain
 	FActorSpawnParameters SpawnParams;
@@ -78,10 +78,27 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 		return nullptr;
 	}
 
-	Units.Add(NewUnit);
+	Units.Add(NewUnit, GridCoords);
 
 	//sunscribe to unit Defeat Event
 	NewUnit->OnUnitDefeated.AddDynamic(this, &AUnitManager::HandleUnitDefeated);
 
 	return NewUnit;
+}
+
+//Returns the X,Y location of the unit or -1,-1 if unit location is not found
+FIntPoint AUnitManager::GetLocationOfUnit(ABaseUnit* TargetUnit)
+{
+	//if unit is not in array, return -1,-1 as a null location
+	if (!Units.Contains(TargetUnit))
+		return FIntPoint(-1, -1);
+	else
+		return Units[TargetUnit];
+}
+
+void AUnitManager::SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
+{
+	//confirm unit is in map update unit location in map
+	if (Units.Contains(TargetUnit) )
+		Units[TargetUnit] = NewLocation;
 }

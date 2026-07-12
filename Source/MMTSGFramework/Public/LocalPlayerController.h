@@ -7,6 +7,7 @@
 #include <BaseUnit.h>
 #include <UnitSelectionWidget.h>
 #include <TileSelectionWidget.h>
+#include <BattleManager.h>
 #include "LocalPlayerController.generated.h"
 
 
@@ -21,7 +22,7 @@ class MMTSGFRAMEWORK_API ALocalPlayerController : public APlayerController
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void HandleMouseClick();
+	void HandleSelect();
 	
 protected:
 	// Called when the game starts or when spawned
@@ -44,6 +45,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
 	UTileSelectionWidget* TileSelectionWidget;
+
+	/*realized that outside of MVP, 
+	BattleManager wont exist in menus so will need to create a parent base ‘GameManager’ class
+	to work with different game states but all share a ‘handle click’ function.*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Managers")
+	ABattleManager* BattleManager;
+
+	//UPROPERTY(EditDefaultsOnly, Category = "Input")
+	//UInputAction* IA_Select;
 
 	//UFUNCTION(BlueprintCallable)
 	void UpdateUnitInfo(ABaseUnit* Unit);

@@ -29,10 +29,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	//returns Tile at Coords
 	ABattleTile* GetTileByCoords(int32 X, int32 Y) const;
+	ABattleTile* GetTileByCoords(FIntPoint Coords) const { return GetTileByCoords(Coords.X, Coords.Y); }
 
 	UFUNCTION(BlueprintCallable)
 	//check if coords are in grid or not
 	bool ValidCoordsInGrid(int32 X, int32 Y) const;
+	bool ValidCoordsInGrid(FIntPoint Coords) const { return ValidCoordsInGrid(Coords.X, Coords.Y); }
 
 	//Check if tile is valid in the grid
 	UFUNCTION(BlueprintCallable)
@@ -119,15 +121,6 @@ protected:
 		{+1, 0}, //SE
 		{-1, 0}, //SW
 		{-1,-1} //NW
-
-
-
-		//{-1,-1}, // NW
-		//{ 0,-1}, // NE
-		//{-1, 0}, // W
-		//{ 1, 0}, // E
-		//{ 0, 1}, // SW
-		//{ 1, 1}  // SE
 	};
 
 

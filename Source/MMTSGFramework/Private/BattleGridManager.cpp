@@ -3,7 +3,7 @@
 
 #include "BattleGridManager.h"
 
-// Sets default values
+// Constructor
 ABattleGridManager::ABattleGridManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -24,8 +24,6 @@ void ABattleGridManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
-//void ABattleGridManager::GenerateGrid()
 
 void ABattleGridManager::GenerateGrid(int32 NewSizeX, int32 NewSizeY,TileShapeType NewTileShape)
 {

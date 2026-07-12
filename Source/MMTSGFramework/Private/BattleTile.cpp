@@ -37,7 +37,6 @@ void ABattleTile::OnConstruction(const FTransform& Transform)
     UpdateStaticMesh();
     DynamicMaterial = TileMesh->CreateAndSetMaterialInstanceDynamic(0);
     UpdateMaterial();
-    OccupyingUnit = nullptr;
 }
 
 void ABattleTile::UpdateMaterial()

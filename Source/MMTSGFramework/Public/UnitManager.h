@@ -29,15 +29,20 @@ public:
 	void GetUnitByID();
 
 	UFUNCTION(BlueprintCallable)
-	ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform);
+	ABaseUnit* SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform UnitSpawnLocationTransform, FIntPoint GridCoords);
 
+	UFUNCTION(BlueprintCallable)
+	FIntPoint GetLocationOfUnit(ABaseUnit* TargetUnit);
+
+	UFUNCTION(BlueprintCallable)
+	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
-	TArray<ABaseUnit*> Units;
+	TMap<ABaseUnit*, FIntPoint> Units;
 
 	UFUNCTION(BlueprintCallable)
 	void HandleUnitDefeated(ABaseUnit* DefeatedUnit);
