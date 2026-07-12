@@ -134,6 +134,8 @@ TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 			if (NewTileMoveCost > MovementPoints)
 				continue;
 
+			// ---- ----
+
 			//if notalready in MoveRange add to MoveRange and checklist
 			if (!MoveRange.Contains(Tile))
 			{
@@ -163,20 +165,6 @@ TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 	}
 
 	return Output;
-
-
-
-	//// Reachable tiles are tile confirmed to accessible by unit
-	//// Check Queue are tiles not yet confirmed but are next to be checked
-	//TArray<ABattleTile*> ReachableTiles, CheckQueue;
-
-	//FIntPoint StartCoords = GetUnitManager()->GetLocationOfUnit(TargetUnit);
-	//if (!BattleGrid->ValidCoordsInGrid(StartCoords))
-	//	return ReachableTiles;
-
-	//CheckQueue.Add( (BattleGrid->GetTileByCoords(StartCoords) ) );
-
-	//return ReachableTiles;
 }
 
 bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
@@ -190,11 +178,25 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 	//clear any tile highlights
 	BattleGrid->ClearHighlightedTiles();
 
+	//---- Generate Movement Path -----
+
+	//get path of tiles
+	TArray<ABattleTile*> MovementPathTiles = GetMovementPath(MovingUnit, TargetTile);
+	TArray<FTransform> MovementPath;
+
+	for (ABattleTile* Tile : MovementPathTiles)
+	{
+		MovementPath.Add(Tile->GetUnitAnchorTransform());
+	}
+
+	//change tile path over to path of transforms for unit to follow
+
+	// ---- -----
+
 	/*
-		Generate Path
+	* ---- This are planned for future iterrations but are deferred for MVP ----
 		Store Planned Path
 		Display planned path and wait for player confirm
-		Execute
 	*/
 
 	//move unit and update unit location [will need to refactor so unit doesnt use tile but the transform location of tile and tiles doesnt know unit]
@@ -205,7 +207,11 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 					)
 					->SetOccupyingUnit(nullptr);
 	
-	MovingUnit->MoveToTile(TargetTile);
+	//Move unit along path
+	//MovingUnit->MoveToTile(TargetTile);
+	MovingUnit->BeginMovement(MovementPath);
+
+	//update unit location
 	FIntPoint Coords(TargetTile->GetGridX(), TargetTile->GetGridY());
 	UnitManager->SetUnitLocation(MovingUnit, Coords);
 
@@ -231,6 +237,195 @@ ABattleTile* ABattleManager::GetTileOfUnit(ABaseUnit* Unit)
 {
 	FIntPoint Coords = UnitManager->GetLocationOfUnit(Unit);
 	return BattleGrid->GetTileByCoords(Coords);
+}
+
+
+struct PathNode
+{
+	FIntPoint Coords;
+	ABattleTile* Tile;
+
+	int32 MoveCostFromStart; //GCost
+	int32 DistanceToEnd; //HCost
+
+	PathNode* ParentNode;
+
+	int32 FCost() const //FCost
+	{
+		return MoveCostFromStart + DistanceToEnd;
+	}
+
+
+	//Compare checks for coord and tile checks
+	bool operator==(const PathNode& Other) const
+	{
+		return Coords == Other.Coords;
+	}
+
+	bool operator==(const ABattleTile* OtherTile) const
+	{
+		return Tile == OtherTile;
+	}
+
+};
+
+TArray<ABattleTile*> ABattleManager::GetMovementPath(ABaseUnit* MovingUnit, ABattleTile* EndTile)
+{
+	//Get Starting Tile
+	ABattleTile* StartingTile = BattleGrid->GetTileByCoords(UnitManager->GetLocationOfUnit(MovingUnit)); //Get Tile by getting Coords of unit and then getting Tile by coords of unit.
+
+	// create a starting path node
+	PathNode* StartingNode = new PathNode();
+	StartingNode->Coords = FIntPoint(StartingTile->GetGridX(), StartingTile->GetGridY());
+	StartingNode->MoveCostFromStart = 0;
+	StartingNode->DistanceToEnd = BattleGrid->GetDistanceBetweenTiles(StartingTile, EndTile);
+	StartingNode->Tile = StartingTile;
+	StartingNode->ParentNode = nullptr;
+
+	TArray< PathNode* >  OpenList, ClosedList; //Open list are tiles still avilable to use while Close list are tiles checked and cannot be used.
+
+	OpenList.Add(StartingNode);
+
+	while (!OpenList.IsEmpty()) // while there are tiles to check contunie searching
+	{
+		//Find Tile with lowest movement cost
+		int32 LowestCost = MAX_int32; //Set to max as highest possible cost
+		PathNode* LowestCostNode = nullptr;
+
+		for (PathNode* Node : OpenList)
+		{
+			if (Node->FCost() < LowestCost)
+			{
+				LowestCost = Node->FCost();
+				LowestCostNode = Node;
+			}
+		}
+
+		if (!LowestCostNode)
+			break;
+
+		//if current lowest is the EndTile, construct path and return
+		if (LowestCostNode->Tile == EndTile)
+		{
+			TArray<ABattleTile*> Output;
+			//Reconstruct path
+			PathNode* CurrentNode = LowestCostNode;
+			
+			while (CurrentNode != nullptr)
+			{
+				Output.Add(CurrentNode->Tile);
+
+				if (CurrentNode->Tile == StartingTile)
+					break;
+
+				CurrentNode = CurrentNode->ParentNode;
+			}
+
+			//memory clenup
+			for (PathNode* Node : OpenList)
+				delete Node;
+
+			for (PathNode* Node : ClosedList)
+				delete Node;
+			
+			//Reverse Output
+			Algo::Reverse(Output);
+
+			//return path
+			return Output;
+		}
+
+		//Move Lowest to closed list as it's being checked now
+		ClosedList.Add(LowestCostNode);
+		OpenList.Remove(LowestCostNode);
+
+		//Check each neighbor and add tiles able to move into, into the open list
+		TArray<ABattleTile*> NodeNeighbors = BattleGrid->GetTileNeighbors(LowestCostNode->Tile);
+
+		for (ABattleTile* Tile : NodeNeighbors)
+		{
+			//----check is unit can move to tile. ----
+			//If terrain move cost is -1 then unable to move to tile, go to next tile
+			if (MovingUnit->GetMovementCost(Tile->GetTerrainType()) == -1)
+				continue;
+
+			//if tile is occupied  move to next tile
+			if (Tile->GetOccupyingUnit() != nullptr)
+				continue;
+
+			//if tile is already in closed list continue
+			if (ClosedList.ContainsByPredicate
+					(
+						[Tile](const PathNode* Node)
+						{
+							return Node->Tile == Tile;
+						}
+					)
+				)
+			{
+				continue;
+			}
+
+			//get move cost to this tile : equal to current move cost to lowestcost node tile + cost to to move to this tile
+			int32 NewTileMoveCost = LowestCost + MovingUnit->GetMovementCost(Tile->GetTerrainType());
+
+			//if move cost is greater then unit move points then unable to enter tile
+			if (NewTileMoveCost > MovingUnit->GetMovementPoints())
+				continue;
+			//---- ----
+
+			//if not already in OpenList add to OpenList
+			if (!OpenList.ContainsByPredicate
+				(
+					[Tile](const PathNode* Node)
+					{
+						return Node->Tile == Tile;
+					})
+				)
+			{
+				PathNode* TempPathNode = new PathNode();
+				TempPathNode->Coords = FIntPoint(Tile->GetGridX(), Tile->GetGridY());
+				TempPathNode->MoveCostFromStart = NewTileMoveCost;
+				TempPathNode->DistanceToEnd = BattleGrid->GetDistanceBetweenTiles(Tile, EndTile);
+				TempPathNode->Tile = Tile;
+				TempPathNode->ParentNode = LowestCostNode;
+
+				OpenList.Add(TempPathNode);
+			}
+			else //if already in list, update if current calculations are less then before
+			{
+				if (PathNode** ExistingNode =
+						OpenList.FindByPredicate
+						(
+							[Tile](const PathNode* Node)
+							{
+								return Node->Tile == Tile;
+							}
+						)
+					)
+				{
+					if (NewTileMoveCost < (*ExistingNode)->MoveCostFromStart)
+					{
+						(*ExistingNode)->MoveCostFromStart = NewTileMoveCost;
+						(*ExistingNode)->ParentNode = LowestCostNode;
+
+						//not needed as distance should not change but left here as a note for future reference
+						//(*ExistingNode)->DistanceToEnd = BattleGrid->GetDistanceBetweenTiles((*ExistingNode)->Tile, EndTile);
+					}
+				}
+			}
+		}
+	}
+
+	//---- return empty array if unable to find path ----
+
+	//memory clenup
+	for (PathNode* Node : OpenList)
+		delete Node;
+
+	for (PathNode* Node : ClosedList)
+		delete Node;
+	return TArray<ABattleTile*>();
 }
 
 /*

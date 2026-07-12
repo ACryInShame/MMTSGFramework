@@ -39,11 +39,6 @@ void ABaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-//void ABaseUnit::Initalize(ABattleTile* StartingLocation)
-//{
-//	CurrentTile = StartingLocation;
-//}
-
 int32 ABaseUnit::GetMovementCost(ETileTerrainType)
 {
 	int32 MovementCost = 1;
@@ -61,14 +56,6 @@ void ABaseUnit::ApplyDamage(int32 Amount)
 
 int32 ABaseUnit::DealDamage()
 {
-	//log attack infomration
-	/*FString AttackMessage = FString::Printf(
-		TEXT("%s attacks with power of %d"),
-		UnitName,
-		AttackPower
-	);
-
-	UE_LOG(LogTemp, Log, TEXT("%s"), AttackMessage);*/
 	return AttackPower;
 }
 
@@ -82,6 +69,11 @@ void ABaseUnit::DefeatUnit()
 //	SetActorTickEnabled(true);
 //	TargetDestination = Destination;
 //}
+
+void ABaseUnit::BeginMovement(TArray<FTransform> Path)
+{
+	
+}
 
 void ABaseUnit::MoveToTile(ABattleTile* Destination)
 {
@@ -113,9 +105,4 @@ void ABaseUnit::MovementComplete()
 	//Snap unit to anchor point
 	SetActorLocation( TargetDestination->GetUnitAnchorTransform().GetLocation() );
 
-	////update unit and tile occupation information
-	//CurrentTile->SetOccupyingUnit(nullptr);
-	//CurrentTile = TargetDestination;
-	//TargetDestination = nullptr;
-	//CurrentTile->SetOccupyingUnit(this);
 }

@@ -17,6 +17,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 );
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
+	FOnMovementFinished,
+	ABaseUnit*,
+	MovementComplete
+);
+
+
 UCLASS()
 class MMTSGFRAMEWORK_API ABaseUnit : public APawn
 {
@@ -36,8 +43,6 @@ public:
 	//void Initalize(ABattleTile* StartingLocation);
 
 	//Unit ------------Gets/Sets----------------
-	//UFUNCTION(BlueprintCallable)
-	//ABattleTile* GetCurrentTile() { return CurrentTile; }
 	UFUNCTION(BlueprintCallable)
 	int32 GetMovementPoints() { return MovementPoints; }
 	UFUNCTION(BlueprintCallable)
@@ -65,12 +70,17 @@ public:
 	//UFUNCTION(BlueprintCallable)
 	//void MoveTo(FTransform Destination);
 
+	//UFUNCTION(BlueprintCallable)
+	void BeginMovement(TArray<FTransform> Path);
+
 	UFUNCTION(BlueprintCallable)
 	void MoveToTile(ABattleTile* Destination);
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
 	int32 GetMovementCost(ETileTerrainType InTerrainType);
+
+	//--------------
 
 protected:
 	// Called when the game starts or when spawned
