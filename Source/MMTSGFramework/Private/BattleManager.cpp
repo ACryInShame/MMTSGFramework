@@ -209,11 +209,10 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 	
 	//Move unit along path
 	//MovingUnit->MoveToTile(TargetTile);
-	MovingUnit->BeginMovement(MovementPath);
-
-	//update unit location
+	//MovingUnit->BeginMovement(MovementPath);
 	FIntPoint Coords(TargetTile->GetGridX(), TargetTile->GetGridY());
-	UnitManager->SetUnitLocation(MovingUnit, Coords);
+
+	UnitManager->MoveUnitDownPath(MovingUnit, MovementPath, Coords);
 
 	//update TargetTile occupancy
 	BattleGrid->GetTileByCoords(Coords)->SetOccupyingUnit(MovingUnit);
@@ -367,7 +366,7 @@ TArray<ABattleTile*> ABattleManager::GetMovementPath(ABaseUnit* MovingUnit, ABat
 			}
 
 			//get move cost to this tile : equal to current move cost to lowestcost node tile + cost to to move to this tile
-			int32 NewTileMoveCost = LowestCost + MovingUnit->GetMovementCost(Tile->GetTerrainType());
+			int32 NewTileMoveCost = LowestCostNode->MoveCostFromStart + MovingUnit->GetMovementCost(Tile->GetTerrainType());
 
 			//if move cost is greater then unit move points then unable to enter tile
 			if (NewTileMoveCost > MovingUnit->GetMovementPoints())

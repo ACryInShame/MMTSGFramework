@@ -274,6 +274,17 @@ TArray<ABattleTile*> ABattleGridManager::GetTileNeighbors(ABattleTile* Tile)
 
 float ABattleGridManager::GetDistanceBetweenTiles(ABattleTile* StartTile, ABattleTile* EndTile)
 {
+	if (!StartTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("StartTile Missing"));
+		return 0;
+	}
+	if (!EndTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("End Tile Missing"));
+		return 0;
+	}
+	
 	return FMath::Abs(StartTile->GetGridX() - EndTile->GetGridX()) +
 			FMath::Abs(StartTile->GetGridY() - EndTile->GetGridY());
 }

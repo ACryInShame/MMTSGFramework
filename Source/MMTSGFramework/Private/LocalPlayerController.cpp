@@ -59,10 +59,10 @@ void ALocalPlayerController::HandleSelect()
     
         //Temp gives command to move unit if unit is already slected
         // will refactor that a button press on menu is requires to issue commands (in combat phase of development)
-        if (SelectedUnit)
+        /*if (SelectedUnit)
         {
             BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
-        }
+        }*/
     }
 }
 
