@@ -3,7 +3,7 @@
 
 #include "BattleGridManager.h"
 
-// Sets default values
+// Constructor
 ABattleGridManager::ABattleGridManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -25,8 +25,14 @@ void ABattleGridManager::Tick(float DeltaTime)
 
 }
 
-void ABattleGridManager::GenerateGrid()
+void ABattleGridManager::GenerateGrid(int32 NewSizeX, int32 NewSizeY,TileShapeType NewTileShape)
 {
+	//Set size and shape
+	SizeX = NewSizeX;
+	SizeY = NewSizeY;
+	GridTileType = NewTileShape;
+	 
+	
 	//Set starting spawn point
 	FVector GridStartingSpawn = FVector::ZeroVector;
 
@@ -169,30 +175,130 @@ ABattleTile* ABattleGridManager::GetTileByCoords(int32 X, int32 Y) const
 
 bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y) const
 {
-	if (X <= 0 || Y <= 0)
+	if (X < 0 || Y < 0)
 		return false;
-	if (X > SizeX || Y > SizeY)
+	if (X >= SizeX || Y >= SizeY)
 		return false;
 
 	return true;
 }
 
-FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
+bool ABattleGridManager::ValidTile(ABattleTile* Tile)
 {
-	ABattleTile* CurrentTile = GetTileByCoords(X,Y);
-
-	if (!CurrentTile)
+	//is input valid
+	if (!Tile)
 	{
-		UE_LOG(
-			LogTemp,
-			Error,
-			TEXT("Attempted to spawn unit at invalid coordinates (%d,%d)"),
-			X,
-			Y
-		);
-		return FTransform::Identity;
+		return false;
 	}
-	else
-		return CurrentTile->GetUnitAnchorTransform();
+
+	return BattleGrid.Contains(Tile);
+}
+
+//FTransform ABattleGridManager::GetTileSpawnLocation(int32 X, int32 Y)
+//{
+//	ABattleTile* CurrentTile = GetTileByCoords(X,Y);
+//
+//	if (!CurrentTile)
+//	{
+//		UE_LOG(
+//			LogTemp,
+//			Error,
+//			TEXT("Attempted to spawn unit at invalid coordinates (%d,%d)"),
+//			X,
+//			Y
+//		);
+//		return FTransform::Identity;
+//	}
+//	else
+//		return CurrentTile->GetUnitAnchorTransform();
+//}
+
+TArray<ABattleTile*> ABattleGridManager::GetTileNeighbors(ABattleTile* Tile)
+{
+	TArray<ABattleTile*> NeighboringTiles;
+
+	//check if tile is in the grid
+	if (!ValidTile(Tile))
+	{
+		//return a blank array if tile is not in the battlegrid
+		return NeighboringTiles;
+	}
+
+	//temp hold grid coords
+	int CurrentTileGridX, CurrentTileGridY;
+	CurrentTileGridX = Tile->GetGridX();
+	CurrentTileGridY = Tile->GetGridY();
+
+	//Use offset grid based on tile type
+	TArray<FIntPoint> GridOffsets;
+	switch (GridTileType)
+	{
+	case TileShapeType::Square:
+		GridOffsets = SquareOffsets;
+		break;
+
+	case TileShapeType::HexFlatTop:
+		if (CurrentTileGridX % 2 == 0)
+		{
+			GridOffsets = EvenColumnOffsets;
+		}
+		else
+		{
+			GridOffsets = OddColumnOffsets;
+		}
+		break;
+
+	case TileShapeType::HexPointedTop:
+		if (CurrentTileGridY % 2 == 0)
+		{
+			GridOffsets = EvenRowOffsets;
+		}
+		else
+		{
+			GridOffsets = OddRowOffsets;
+		}
+		break;
+	}
+
+	for (const FIntPoint& Offset : GridOffsets)
+	{
+		ABattleTile* TempTile = GetTileByCoords(CurrentTileGridX + Offset.X, CurrentTileGridY + Offset.Y);
+
+		if (ValidTile(TempTile))
+			NeighboringTiles.Add(TempTile);
+	}
+
+
+	return NeighboringTiles;
+}
+
+float ABattleGridManager::GetDistanceBetweenTiles(ABattleTile* StartTile, ABattleTile* EndTile)
+{
+	if (!StartTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("StartTile Missing"));
+		return 0;
+	}
+	if (!EndTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("End Tile Missing"));
+		return 0;
+	}
+	
+	return FMath::Abs(StartTile->GetGridX() - EndTile->GetGridX()) +
+			FMath::Abs(StartTile->GetGridY() - EndTile->GetGridY());
+}
+
+void ABattleGridManager::ClearHighlightedTiles()
+{
+	for(ABattleTile* CurrentTile: BattleGrid)
+	{
+		if (CurrentTile) //validity check for pointer to avoid crashes
+			CurrentTile->ClearHighlight();
+		else
+		{
+			UE_LOG(	LogTemp,Error,TEXT("Failed to find tile during CLearHighlightTiles() ") );
+		}
+	}
 }
 

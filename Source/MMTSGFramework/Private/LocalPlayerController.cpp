@@ -12,8 +12,9 @@ void ALocalPlayerController::BeginPlay()
     //bEnableMouseOverEvents = true;
 }
 
-void ALocalPlayerController::HandleMouseClick()
+void ALocalPlayerController::HandleSelect()
 {
+    //Get selected actor
     FHitResult Hit;
 
     bool bHit = GetHitResultUnderCursor(
@@ -27,6 +28,7 @@ void ALocalPlayerController::HandleMouseClick()
         return;
     }
 
+    //update unit info if selected a unit
     if (ABaseUnit* NewSelectedUnit = Cast<ABaseUnit>(Hit.GetActor()))
     {
         UE_LOG(
@@ -38,18 +40,14 @@ void ALocalPlayerController::HandleMouseClick()
 
         SelectUnit(NewSelectedUnit);
 
-        ABattleTile* NewSelectedTile = NewSelectedUnit->GetCurrentTile();
+        ////update tile info based on where the unit is
+        ABattleTile* NewSelectedTile = BattleManager->GetTileOfUnit(NewSelectedUnit);
+        SelectTile(NewSelectedTile);
 
-        UE_LOG(
-            LogTemp,
-            Log,
-            TEXT("Selected Tile: %s"),
-            *NewSelectedTile->GetFName().ToString()
-        );
-
-        SelectTile(NewSelectedUnit->GetCurrentTile());
+        BattleManager->HightlightMoveRange(NewSelectedUnit);
     }
 
+    //if tile, update tile info
     if (ABattleTile* NewSelectedTile = Cast<ABattleTile>(Hit.GetActor()))
     {
         UE_LOG(
@@ -58,12 +56,14 @@ void ALocalPlayerController::HandleMouseClick()
             TEXT("Selected Tile: %s"),
             *NewSelectedTile->GetFName().ToString()
         );
-
+    
         SelectTile(NewSelectedTile);
-
+    
+        //Temp gives command to move unit if unit is already slected
+        // will refactor that a button press on menu is requires to issue commands (in combat phase of development)
         if (SelectedUnit)
         {
-            SelectedUnit->MoveToTile(NewSelectedTile);
+            BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
         }
     }
 }

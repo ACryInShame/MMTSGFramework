@@ -5,15 +5,23 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "TileTerrainType.h"
-#include "BattleTile.h"
+//#include "BattleTile.h"
 #include "BaseUnit.generated.h"
 
 class ABaseUnit;
+
+//---- Event Delegates ----
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 	FOnUnitDefeated,
 	ABaseUnit*,
 	DefeatedUnit
+);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
+	FOnMovementFinished,
+	ABaseUnit*, MovingUnit,
+	FIntPoint, EndCoords
 );
 
 
@@ -31,13 +39,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//Unit ------------Initalization----------------
-	UFUNCTION(BlueprintCallable)
-	void Initalize(ABattleTile* StartingLocation);
 
-	//Unit ------------Gets/Sets----------------
-	UFUNCTION(BlueprintCallable)
-	ABattleTile* GetCurrentTile() { return CurrentTile; }
+	//------------Gets/Sets----------------
 	UFUNCTION(BlueprintCallable)
 	int32 GetMovementPoints() { return MovementPoints; }
 	UFUNCTION(BlueprintCallable)
@@ -48,7 +51,7 @@ public:
 	int32 GetMaxHealth() { return MaxHealth; }
 
 
-	//Unit ------------Combat----------------
+	//------------Combat----------------
 	UFUNCTION(BlueprintCallable)
 	void ApplyDamage(int32 Amount);
 
@@ -58,15 +61,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DefeatUnit();
 
+
+	//------------Events----------------
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnUnitDefeated OnUnitDefeated;
 
-	//Unit ------------Movement----------------
-	//UFUNCTION(BlueprintCallable)
-	//void MoveTo(FTransform Destination);
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnMovementFinished OnMovementFinished;
 
+	// ------------Movement----------------
+	//Start movement for unit, initalizes variables for movement
 	UFUNCTION(BlueprintCallable)
-	void MoveToTile(ABattleTile* Destination);
+	void BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords);
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
@@ -98,18 +104,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	TMap<ETileTerrainType, int32> MovementCosts;
 
-	//Unit ------------Current Location------------
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "Attribute")
-	ABattleTile* CurrentTile;
 
 	//Unit ------------Movement----------------
-	//FTransform TargetDestination;
-	ABattleTile* TargetDestination;
+	TArray<FTransform> CurrentPath;
+	int32 CurrentPathIndex;
+	FIntPoint MovementEndCoords;
+	bool bMoving; //is a boolean to tell if unit is currently moving or not, not currently in use but may become useful later.
+	FTransform CurrentDestination;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	float MoveSpeed = 300.0f;
 
 	void UpdateMovement(float DeltaTime);
 	void MovementComplete();
-
 };

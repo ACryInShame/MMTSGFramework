@@ -5,8 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TileShapeType.h"
-#include <TileTerrainType.h>
+#include "TileTerrainType.h"
+#include "ETileHighlightState.h"
 #include "BattleTile.generated.h"
+
+class ABaseUnit; //Forward delaration to prevent circle declaration (as BaseUnit #includes this header)
 
 UCLASS()
 class MMTSGFRAMEWORK_API ABattleTile : public AActor
@@ -23,12 +26,16 @@ public:
 	void SetGridX(int32 NewGridX) { GridX = NewGridX; }
 	void SetGridY(int32 NewGridY) { GridY = NewGridY; }
 	void SetTerrainType(ETileTerrainType NewTerrain) { TerrainType = NewTerrain; }
+	void SetOccupyingUnit(ABaseUnit* NewUnit) { OccupyingUnit = NewUnit; }
+	UFUNCTION(BlueprintCallable)
+	void SetHighlightState(ETileHighlightState NewState) { HighLightState = NewState; UpdateMaterial(); }
 
 	TileShapeType GetTileShapeType() { return TileShape; }
 	int32 GetGridX() { return GridX; }
 	int32 GetGridY() { return GridY; }
 	UStaticMeshComponent* GetTileMesh() {return TileMesh;};
 	ETileTerrainType GetTerrainType() { return TerrainType; }
+	ABaseUnit* GetOccupyingUnit() { return OccupyingUnit; }
 
 	UFUNCTION(BlueprintCallable)
 	FTransform GetUnitAnchorTransform() const;
@@ -41,7 +48,7 @@ public:
 	FLinearColor GetTerrainColor() const;
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateTerrainColor();
+	void ClearHighlight();
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,7 +57,7 @@ protected:
 	UFUNCTION()
 	void UpdateStaticMesh();
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
 	UMaterialInstanceDynamic* DynamicMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
@@ -61,6 +68,9 @@ protected:
 
 	//override of UE constructor
 	virtual void OnConstruction(const FTransform& Transform) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Occupancy")
+	ABaseUnit* OccupyingUnit = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* TileMesh;
@@ -80,5 +90,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TileTypes")
 	UStaticMesh* PointedHexMesh;
 
+	UFUNCTION(BlueprintCallable, Category = "Highlights")
+	void UpdateMaterial();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Highlights")
+	ETileHighlightState HighLightState;
 
 };
