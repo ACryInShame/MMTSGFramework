@@ -7,6 +7,12 @@
 #include <BaseUnit.h>
 #include "UnitManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
+	FOnUnitMovementFinished,
+	ABaseUnit*, Unit,
+	FIntPoint, EndCoords
+);
+
 UCLASS()
 class MMTSGFRAMEWORK_API AUnitManager : public APawn
 {
@@ -36,6 +42,16 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation);
+
+	//Move unit to follow path, return true if unit was able to move.
+	UFUNCTION(BlueprintCallable)
+	bool MoveUnitDownPath(ABaseUnit* MovingUnit, const TArray<FTransform>& NewLocation, FIntPoint EndCoords);
+
+	UFUNCTION(Category = "Events")
+	void HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords);
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnUnitMovementFinished OnUnitMovementFinished;
 
 protected:
 	// Called when the game starts or when spawned

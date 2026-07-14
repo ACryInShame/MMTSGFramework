@@ -36,6 +36,9 @@ void ABattleManager::BeginPlay()
 	UnitManager = GetWorld()->SpawnActor<AUnitManager>(UnitManagerBlueprint,
 															GetActorTransform(),
 															SpawnParams);
+	UnitManager->OnUnitMovementFinished.AddDynamic(
+		this,
+		&ABattleManager::HandleMovementFinished);
 }
 
 void ABattleManager::initialization()
@@ -169,18 +172,35 @@ TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 
 bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 {
-	//Validate tile selection
+	//Validate tile input
+	if (!MovingUnit)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid Unit in BattleManager::MoveCommand"));
+		return false;
+	}
+	if (!TargetTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid Tile in BattleManager::MoveCommand"));
+		return false;
+	}
+
+	//Is player Turn?
+
+	//Is Target Reachable?
+		//is tile occupied
+
+	//get unit movement range
 	TArray<ABattleTile*> MoveRange = GetMovementRange(MovingUnit);
 
 	if (!MoveRange.Contains(TargetTile))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Unable to get movement range from unit in BattleManager::MoveCommand"));
 		return false;
-
-	//clear any tile highlights
-	BattleGrid->ClearHighlightedTiles();
+	}
 
 	//---- Generate Movement Path -----
 
-	//get path of tiles
+	//get path of tiles, then change over to path of transforms for unit movement
 	TArray<ABattleTile*> MovementPathTiles = GetMovementPath(MovingUnit, TargetTile);
 	TArray<FTransform> MovementPath;
 
@@ -191,8 +211,6 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 
 	//change tile path over to path of transforms for unit to follow
 
-	// ---- -----
-
 	/*
 	* ---- This are planned for future iterrations but are deferred for MVP ----
 		Store Planned Path
@@ -200,6 +218,7 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 	*/
 
 	//move unit and update unit location [will need to refactor so unit doesnt use tile but the transform location of tile and tiles doesnt know unit]
+	
 	//update old tile occupancy
 	BattleGrid->GetTileByCoords
 					( 
@@ -211,11 +230,7 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 	//MovingUnit->MoveToTile(TargetTile);
 	//MovingUnit->BeginMovement(MovementPath);
 	FIntPoint Coords(TargetTile->GetGridX(), TargetTile->GetGridY());
-
 	UnitManager->MoveUnitDownPath(MovingUnit, MovementPath, Coords);
-
-	//update TargetTile occupancy
-	BattleGrid->GetTileByCoords(Coords)->SetOccupyingUnit(MovingUnit);
 
 	return true;
 }
@@ -449,3 +464,11 @@ TArray<ABattleTile*> ABattleManager::GetMovementPath(ABaseUnit* MovingUnit, ABat
 				Add Neighbor to TileCheckList //This is so we can check the updated movement cost
 - Create list of tiles from MoveRange Map → Return List
 */
+
+
+void ABattleManager::HandleMovementFinished(ABaseUnit* MovingUnit,FIntPoint Coords)
+{
+	//After move finishes
+	//update TargetTile occupancy
+	BattleGrid->GetTileByCoords(Coords)->SetOccupyingUnit(MovingUnit);
+}

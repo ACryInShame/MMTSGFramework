@@ -49,6 +49,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<ABattleTile*> GetMovementPath(ABaseUnit* MovingUnit, ABattleTile* EndTile);
 
+	UFUNCTION(Category = "Events")
+	void HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "TileTerrainType.h"
-#include "BattleTile.h"
+//#include "BattleTile.h"
 #include "BaseUnit.generated.h"
 
 class ABaseUnit;
@@ -17,10 +17,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 );
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
 	FOnMovementFinished,
-	ABaseUnit*,
-	MovementComplete
+	ABaseUnit*, MovingUnit,
+	FIntPoint, EndCoords
 );
 
 
@@ -63,18 +63,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DefeatUnit();
 
+
+	//Unit ------------Events----------------
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnUnitDefeated OnUnitDefeated;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnMovementFinished OnMovementFinished;
 
 	//Unit ------------Movement----------------
 	//UFUNCTION(BlueprintCallable)
 	//void MoveTo(FTransform Destination);
 
 	//UFUNCTION(BlueprintCallable)
-	void BeginMovement(TArray<FTransform> Path);
+	void BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords);
 
-	UFUNCTION(BlueprintCallable)
-	void MoveToTile(ABattleTile* Destination);
+	//UFUNCTION(BlueprintCallable)
+	//void MoveToTile(ABattleTile* Destination);
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
@@ -113,13 +118,19 @@ protected:
 	//ABattleTile* CurrentTile;
 
 	//Unit ------------Movement----------------
+	TArray<FTransform> CurrentPath;
+	int32 CurrentPathIndex;
+	FIntPoint MovementEndCoords;
+	bool bMoving;
+	FTransform CurrentDestination;
+
+
 	//FTransform TargetDestination;
-	ABattleTile* TargetDestination;
+	//ABattleTile* TargetDestination;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	float MoveSpeed = 300.0f;
 
 	void UpdateMovement(float DeltaTime);
 	void MovementComplete();
-
 };

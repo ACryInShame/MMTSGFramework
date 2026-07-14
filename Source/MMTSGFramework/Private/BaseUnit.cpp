@@ -25,11 +25,29 @@ void ABaseUnit::Tick(float DeltaTime)
 	// update location for movement
 	UpdateMovement(DeltaTime);
 
-	if (GetActorLocation().Equals(TargetDestination->GetUnitAnchorTransform().GetLocation(),1.0f))
+	//check it reached current target destination, if not continue moving
+	if (GetActorLocation().Equals(CurrentDestination.GetLocation(), 1.f))
 	{
-		SetActorTickEnabled(false);
-		MovementComplete();
+		// update next index
+		CurrentPathIndex++;
+
+		//check if there are any destinations left in path
+		if (CurrentPathIndex >= CurrentPath.Num())
+		{
+			//move complete
+			MovementComplete();
+		}
+		else //if there is still some left, update to next destination
+		{
+			CurrentDestination = CurrentPath[CurrentPathIndex];
+		}
 	}
+
+	//if (GetActorLocation().Equals(CurrentPath.Last().GetLocation()))
+	//{
+	//	SetActorTickEnabled(false);
+	//	MovementComplete();
+	//}
 }
 
 // Called to bind functionality to input
@@ -64,35 +82,40 @@ void ABaseUnit::DefeatUnit()
 	OnUnitDefeated.Broadcast(this);
 }
 
-//void ABaseUnit::MoveTo(FTransform Destination)
+void ABaseUnit::BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords )
+{
+	//Check Input
+	if (Path.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Path is Empty in ABaseUnit::BeginMovement"));
+		return;
+	}
+
+	//setup path variables for tick movement
+	CurrentPath = Path;
+	CurrentPathIndex = 1; //we do not use first location since it is where unit is currently
+	MovementEndCoords = EndCoords;
+	bMoving = true;
+	CurrentDestination = CurrentPath[0];
+
+	SetActorTickEnabled(true);
+
+	////Finish movement
+	//FOnMovementFinished.Broadcast(this, EndCoords);
+}
+
+//void ABaseUnit::MoveToTile(ABattleTile* Destination)
 //{
 //	SetActorTickEnabled(true);
 //	TargetDestination = Destination;
 //}
 
-void ABaseUnit::BeginMovement(TArray<FTransform> Path)
-{
-	
-}
-
-void ABaseUnit::MoveToTile(ABattleTile* Destination)
-{
-	SetActorTickEnabled(true);
-	TargetDestination = Destination;
-}
-
 void ABaseUnit::UpdateMovement(float DeltaTime)
 {
-	if (!TargetDestination)
-	{
-		SetActorTickEnabled(false);
-		return;
-	}
-
 	FVector NewLocation =
 		FMath::VInterpConstantTo(
 			GetActorLocation(),
-			TargetDestination->GetUnitAnchorTransform().GetLocation(),
+			CurrentDestination.GetLocation(),
 			DeltaTime,
 			MoveSpeed
 		);
@@ -102,7 +125,8 @@ void ABaseUnit::UpdateMovement(float DeltaTime)
 
 void ABaseUnit::MovementComplete()
 {
-	//Snap unit to anchor point
-	SetActorLocation( TargetDestination->GetUnitAnchorTransform().GetLocation() );
+	SetActorTickEnabled(false);
+	bMoving = false;
 
+	OnMovementFinished.Broadcast(this, MovementEndCoords);
 }

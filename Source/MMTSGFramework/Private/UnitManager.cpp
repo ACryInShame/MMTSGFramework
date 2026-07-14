@@ -102,3 +102,49 @@ void AUnitManager::SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
 	if (Units.Contains(TargetUnit) )
 		Units[TargetUnit] = NewLocation;
 }
+
+bool AUnitManager::MoveUnitDownPath(ABaseUnit* MovingUnit, const TArray<FTransform>& MovementPath, FIntPoint EndCoords)
+{
+	//check if input is valid
+	if (!Units.Find(MovingUnit))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid Unit in UnitManager::MoveUnitDownPath"));
+		return false;
+	}
+	if (MovementPath.Num() == 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid MovePath in UnitManager::MoveUnitDownPath"));
+		return false;
+	}
+	if (EndCoords.X < 0 || EndCoords.Y < 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalud EndCoords in UnitManager::MoveUnitDownPath"));
+		return false;
+	}
+
+	//subscribe to unit movement to know when unit finishes move
+	MovingUnit->OnMovementFinished.AddDynamic(
+		this,
+		&AUnitManager::HandleMovementFinished
+	);
+
+	//Have Unit Move
+	MovingUnit->BeginMovement(MovementPath,EndCoords);
+
+	return true;
+}
+
+void AUnitManager::HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords)
+{
+	// Update Unit coords in TMap
+	*Units.Find(Unit) = EndCoords;
+	
+	//remove binding
+	Unit->OnMovementFinished.RemoveDynamic(
+		this,
+		&AUnitManager::HandleMovementFinished
+	);
+
+	// Notify BattleManager via event
+	OnUnitMovementFinished.Broadcast(Unit, EndCoords);
+}
