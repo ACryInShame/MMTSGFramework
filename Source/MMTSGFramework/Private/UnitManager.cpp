@@ -18,15 +18,6 @@ void AUnitManager::BeginPlay()
 	
 }
 
-void AUnitManager::HandleUnitDefeated(ABaseUnit* DefeatedUnit)
-{
-	// remove unit from unit list
-	Units.Remove(DefeatedUnit);
-
-	// destory pawn
-	DefeatedUnit->Destroy();
-}
-
 // Called every frame
 void AUnitManager::Tick(float DeltaTime)
 {
@@ -34,29 +25,7 @@ void AUnitManager::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AUnitManager::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-//ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform SpawnTransform)
-//{
-//	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, SpawnTransform);
-//
-//	if (NewUnit)
-//		Units.Add(NewUnit);
-//	NewUnit->Initalize();
-//
-//	return NewUnit;
-//}
-
 void AUnitManager::DestroyUnit()
-{
-}
-
-void AUnitManager::GetUnitByID()
 {
 }
 
@@ -80,27 +49,10 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 
 	Units.Add(NewUnit, GridCoords);
 
-	//sunscribe to unit Defeat Event
+	//subscribe to unit Defeat Event
 	NewUnit->OnUnitDefeated.AddDynamic(this, &AUnitManager::HandleUnitDefeated);
 
 	return NewUnit;
-}
-
-//Returns the X,Y location of the unit or -1,-1 if unit location is not found
-FIntPoint AUnitManager::GetLocationOfUnit(ABaseUnit* TargetUnit)
-{
-	//if unit is not in array, return -1,-1 as a null location
-	if (!Units.Contains(TargetUnit))
-		return FIntPoint(-1, -1);
-	else
-		return Units[TargetUnit];
-}
-
-void AUnitManager::SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
-{
-	//confirm unit is in map update unit location in map
-	if (Units.Contains(TargetUnit) )
-		Units[TargetUnit] = NewLocation;
 }
 
 bool AUnitManager::MoveUnitDownPath(ABaseUnit* MovingUnit, const TArray<FTransform>& MovementPath, FIntPoint EndCoords)
@@ -147,4 +99,13 @@ void AUnitManager::HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords)
 
 	// Notify BattleManager via event
 	OnUnitMovementFinished.Broadcast(Unit, EndCoords);
+}
+
+void AUnitManager::HandleUnitDefeated(ABaseUnit* DefeatedUnit)
+{
+	// remove unit from unit list
+	Units.Remove(DefeatedUnit);
+
+	// destory pawn
+	DefeatedUnit->Destroy();
 }

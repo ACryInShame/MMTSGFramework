@@ -11,9 +11,6 @@
 #include "LocalPlayerController.generated.h"
 
 
-/**
- * 
- */
 UCLASS()
 class MMTSGFRAMEWORK_API ALocalPlayerController : public APlayerController
 {
@@ -28,6 +25,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/*realized that outside of MVP,
+	BattleManager wont exist in menus so will need to create a parent base ‘GameManager’ class
+	to work with different game states but all share a ‘handle click’ function.*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Managers")
+	ABattleManager* BattleManager;
+
+	//--- Selections ----
 	UFUNCTION(BlueprintCallable)
 	void SelectUnit(ABaseUnit* NewTargetUnit);
 
@@ -46,22 +50,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
 	UTileSelectionWidget* TileSelectionWidget;
 
-	/*realized that outside of MVP, 
-	BattleManager wont exist in menus so will need to create a parent base ‘GameManager’ class
-	to work with different game states but all share a ‘handle click’ function.*/
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Managers")
-	ABattleManager* BattleManager;
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Input")
-	//UInputAction* IA_Select;
-
 	//UFUNCTION(BlueprintCallable)
 	void UpdateUnitInfo(ABaseUnit* Unit);
 
 	//UFUNCTION(BlueprintCallable)
 	void UpdateTileInfo(ABattleTile* Tile);
 
-	//UFUNCTION(BlueprintCallable)
-	//void ClearTargetSelection();
-	
 };

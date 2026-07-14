@@ -16,6 +16,7 @@ void ABattleManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// spawn Battle Grid and Unit Manager
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -36,6 +37,8 @@ void ABattleManager::BeginPlay()
 	UnitManager = GetWorld()->SpawnActor<AUnitManager>(UnitManagerBlueprint,
 															GetActorTransform(),
 															SpawnParams);
+
+	// subscribe to unit finsihed event
 	UnitManager->OnUnitMovementFinished.AddDynamic(
 		this,
 		&ABattleManager::HandleMovementFinished);
@@ -53,7 +56,6 @@ void ABattleManager::Tick(float DeltaTime)
 
 }
 
-//Spawn a unit using unit manager at location on grid
 ABaseUnit* ABattleManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
 {
 	//Get Tile for spawn location
@@ -81,7 +83,6 @@ ABaseUnit* ABattleManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitCl
 	return NewUnit;
 }
 
-//Return a list of tiles that Unit is able to move to from current location
 TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 {
 	int32 MovementPoints = TargetUnit->GetMovementPoints();
@@ -160,6 +161,7 @@ TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 		}
 	}
 
+	//create list of tiles from TPair
 	TArray<ABattleTile*> Output;
 
 	for (const TPair < ABattleTile*, int32> KeyPair : MoveRange)
@@ -186,15 +188,20 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 
 	//Is player Turn?
 
-	//Is Target Reachable?
-		//is tile occupied
-
 	//get unit movement range
 	TArray<ABattleTile*> MoveRange = GetMovementRange(MovingUnit);
 
+	//Is Target Reachable?
 	if (!MoveRange.Contains(TargetTile))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Unable to get movement range from unit in BattleManager::MoveCommand"));
+		return false;
+	}
+
+	//is tile occupied
+	if (TargetTile->GetOccupyingUnit() != nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Selected Tile is occupied, unable to move to tile in BattleManager::MoveCommand"));
 		return false;
 	}
 
@@ -253,7 +260,7 @@ ABattleTile* ABattleManager::GetTileOfUnit(ABaseUnit* Unit)
 	return BattleGrid->GetTileByCoords(Coords);
 }
 
-
+// Node for pathfinding
 struct PathNode
 {
 	FIntPoint Coords;
@@ -441,30 +448,6 @@ TArray<ABattleTile*> ABattleManager::GetMovementPath(ABaseUnit* MovingUnit, ABat
 		delete Node;
 	return TArray<ABattleTile*>();
 }
-
-/*
-- Get Unit MovementPoints
-- Get Unit starting tile, save to MoveRange Map with 0 MoveCostFromStart
-- Add Start Tile to TileCheckList Map with 0 MoveCostFromStart
-- Loop while TileCheckList is not empty
-	- Get tile with lowest MoveCostFromStart in TileCheckList → CurrentTile
-	- Remove CurrentTile from TileCheckList
-	- Get all CurrentTile Neighbors
-	- Loop all Neighbors
-		- Calculate NewMovementCost = CurrentTile MoveCostFromStart  (found in MoveRange Map) + MovementCost of Unit to move into currently checked Neighbor
-		- If NewMovementCost > Unit Movement points
-			- Continue
-		- if Neighbor is not in MoveRange map
-			- Add Neighbor into MoveRange with NewMovementCost
-			- Add Neighbor to TileCheckList
-		- else
-			- if NewMovementCost < Neighbor ‘s MoveCostFromStart found in MoveRange Map
-				- Update Neighbor ‘s MoveCostFromStart found in MoveRange Map = NewMovementCost
-				- If Neighbor is not already in TileCheckList
-				Add Neighbor to TileCheckList //This is so we can check the updated movement cost
-- Create list of tiles from MoveRange Map → Return List
-*/
-
 
 void ABattleManager::HandleMovementFinished(ABaseUnit* MovingUnit,FIntPoint Coords)
 {

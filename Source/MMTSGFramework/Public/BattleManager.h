@@ -28,27 +28,36 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AUnitManager* GetUnitManager() { return UnitManager; }
-	//-----------------------
 
+
+	//---- Unit functions and commands ----
+
+	//Spawn a unit using unit manager at location on grid
 	UFUNCTION(BlueprintCallable)
 	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 CoordsX, int32 CoordsY);
-
-	UFUNCTION(BlueprintCallable)
-	TArray<ABattleTile*> GetMovementRange(ABaseUnit* TargetUnit);
 
 	//Command a unit to move to a tile, returns true or flase if unit was able to move to location
 	UFUNCTION(BlueprintCallable)
 	bool MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile);
 
+	// ---- Grid and Tile Functions ---
+	//Returns list of tiles based on the movement range of unit, takes terrain into account
+	UFUNCTION(BlueprintCallable)
+	TArray<ABattleTile*> GetMovementRange(ABaseUnit* TargetUnit);
+
+	//highlights tiles based on the movement range of unit, takes terrain into account
 	UFUNCTION(BlueprintCallable)
 	void HightlightMoveRange(ABaseUnit* MovingUnit);
 
+	//returns the tile the unit occupies
 	UFUNCTION(BlueprintCallable)
 	ABattleTile* GetTileOfUnit(ABaseUnit* Unit);
 
+	//Find path between unit and tile using modified A* taking terrain into account
 	UFUNCTION(BlueprintCallable)
 	TArray<ABattleTile*> GetMovementPath(ABaseUnit* MovingUnit, ABattleTile* EndTile);
 
+	// ---- Delegate Events ----
 	UFUNCTION(Category = "Events")
 	void HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords);
 
@@ -58,7 +67,7 @@ protected:
 
 	void initialization();
 
-	//Manager Variables
+	// ---- Manager Variables ----
 	UPROPERTY() //To prevent Unreal Engine Garbage colltion from accidently removing it
 	ABattleGridManager* BattleGrid = nullptr;
 	UPROPERTY() //To prevent Unreal Engine Garbage colltion from accidently removing it

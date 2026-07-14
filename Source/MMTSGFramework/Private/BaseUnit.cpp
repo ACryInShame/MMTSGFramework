@@ -72,14 +72,14 @@ void ABaseUnit::ApplyDamage(int32 Amount)
 		DefeatUnit();
 }
 
-int32 ABaseUnit::DealDamage()
-{
-	return AttackPower;
-}
-
 void ABaseUnit::DefeatUnit()
 {
 	OnUnitDefeated.Broadcast(this);
+}
+
+int32 ABaseUnit::DealDamage()
+{
+	return AttackPower;
 }
 
 void ABaseUnit::BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords )
@@ -93,22 +93,13 @@ void ABaseUnit::BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords )
 
 	//setup path variables for tick movement
 	CurrentPath = Path;
-	CurrentPathIndex = 1; //we do not use first location since it is where unit is currently
+	CurrentPathIndex = 0;
 	MovementEndCoords = EndCoords;
 	bMoving = true;
 	CurrentDestination = CurrentPath[0];
 
 	SetActorTickEnabled(true);
-
-	////Finish movement
-	//FOnMovementFinished.Broadcast(this, EndCoords);
 }
-
-//void ABaseUnit::MoveToTile(ABattleTile* Destination)
-//{
-//	SetActorTickEnabled(true);
-//	TargetDestination = Destination;
-//}
 
 void ABaseUnit::UpdateMovement(float DeltaTime)
 {

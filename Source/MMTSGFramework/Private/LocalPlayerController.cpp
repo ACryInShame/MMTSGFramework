@@ -14,6 +14,7 @@ void ALocalPlayerController::BeginPlay()
 
 void ALocalPlayerController::HandleSelect()
 {
+    //Get selected actor
     FHitResult Hit;
 
     bool bHit = GetHitResultUnderCursor(
@@ -46,6 +47,7 @@ void ALocalPlayerController::HandleSelect()
         BattleManager->HightlightMoveRange(NewSelectedUnit);
     }
 
+    //if tile, update tile info
     if (ABattleTile* NewSelectedTile = Cast<ABattleTile>(Hit.GetActor()))
     {
         UE_LOG(
