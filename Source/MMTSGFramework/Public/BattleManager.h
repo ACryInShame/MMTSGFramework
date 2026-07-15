@@ -7,6 +7,7 @@
 #include "InputAction.h"
 #include <BattleGridManager.h>
 #include <UnitManager.h>
+#include <TacticalCommands.h>
 #include "ETileHighlightState.h"
 #include "BattleManager.generated.h"
 
@@ -32,6 +33,12 @@ public:
 
 	//---- Unit functions and commands ----
 
+	//process commands given by PlayerController or AI
+	bool ExecuteCommand(const FTacticalCommand& Command);
+
+	//process commands given by PlayerController or AI
+	bool ExecuteMove(const FTacticalCommand& Command);
+
 	//Spawn a unit using unit manager at location on grid
 	UFUNCTION(BlueprintCallable)
 	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 CoordsX, int32 CoordsY);
@@ -52,6 +59,10 @@ public:
 	//returns the tile the unit occupies
 	UFUNCTION(BlueprintCallable)
 	ABattleTile* GetTileOfUnit(ABaseUnit* Unit);
+
+	//returns the Unit by their location
+	UFUNCTION(BlueprintCallable)
+	ABaseUnit* GetUnitByCoords(FIntPoint Coords);
 
 	//Find path between unit and tile using modified A* taking terrain into account
 	UFUNCTION(BlueprintCallable)

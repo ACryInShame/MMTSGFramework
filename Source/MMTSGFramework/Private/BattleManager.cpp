@@ -56,6 +56,53 @@ void ABattleManager::Tick(float DeltaTime)
 
 }
 
+bool ABattleManager::ExecuteCommand(const FTacticalCommand& Command)
+{
+	switch (Command.Type)
+	{
+	case ETacticalCommandType::Move:
+		return ExecuteMove(Command);
+		break;
+
+	case ETacticalCommandType::Attack:
+		//return ExecuteAttack(Command);
+		break;
+
+	case ETacticalCommandType::Wait:
+		//return ExecuteWait(Command);
+		break;
+
+	default:
+		return false;
+	}
+
+	return false;
+}
+
+bool ABattleManager::ExecuteMove(const FTacticalCommand& Command)
+{
+	ABaseUnit* SourceUnit =
+		UnitManager->GetUnitByID(Command.SourceUnitID);
+
+	if (!SourceUnit)
+	{
+
+		UE_LOG(LogTemp, Error, TEXT("No unit in ABattleManager::ExecuteMove"));
+
+		return false;
+	}
+
+	ABattleTile* DestinationTile = BattleGrid->GetTileByCoords(Command.TargetCoords);
+
+	if (!BattleGrid->ValidTile(DestinationTile))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not a valid Tile in ABattleManager::ExecuteMove"));
+
+		return false;
+	}
+	return MoveCommand(SourceUnit, DestinationTile );
+}
+
 ABaseUnit* ABattleManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
 {
 	//Get Tile for spawn location
@@ -258,6 +305,11 @@ ABattleTile* ABattleManager::GetTileOfUnit(ABaseUnit* Unit)
 {
 	FIntPoint Coords = UnitManager->GetLocationOfUnit(Unit);
 	return BattleGrid->GetTileByCoords(Coords);
+}
+
+ABaseUnit* ABattleManager::GetUnitByCoords(FIntPoint Coords)
+{
+	return 	UnitManager->GetUnitByCoords(Coords);
 }
 
 // Node for pathfinding

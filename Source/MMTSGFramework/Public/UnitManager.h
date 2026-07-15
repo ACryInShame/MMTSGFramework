@@ -37,22 +37,16 @@ public:
 	//   - Unit sets and gets -
 	UFUNCTION(BlueprintCallable)
 	//Returns the X,Y location of the unit or -1,-1 if unit location is not found
-	FIntPoint GetLocationOfUnit(ABaseUnit* TargetUnit)
-	{
-		//if unit is not in array, return -1,-1 as a null location
-		if (!Units.Contains(TargetUnit))
-			return FIntPoint(-1, -1);
-		else
-			return Units[TargetUnit];
-	};
+	FIntPoint GetLocationOfUnit(ABaseUnit* TargetUnit);
+
+	//Returns Unit based on X,Y location of the unit or Nullptr if unit is not found
+	ABaseUnit* GetUnitByCoords(FIntPoint Coords);
 
 	UFUNCTION(BlueprintCallable)
-	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
-	{
-		//confirm unit is in map update unit location in map
-		if (Units.Contains(TargetUnit))
-			Units[TargetUnit] = NewLocation;
-	};
+	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation);
+
+	UFUNCTION(BlueprintCallable)
+	ABaseUnit* GetUnitByID(int32 UnitID);
 
 	//Move unit to follow path, return true if unit was able to move.
 	UFUNCTION(BlueprintCallable)
@@ -76,4 +70,8 @@ protected:
 	//Gets called when a unit calls their defeat function
 	UFUNCTION(BlueprintCallable)
 	void HandleUnitDefeated(ABaseUnit* DefeatedUnit);
+
+private:
+	UPROPERTY()
+	int32 NextUnitID = 0;
 };

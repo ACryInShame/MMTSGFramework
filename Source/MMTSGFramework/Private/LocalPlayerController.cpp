@@ -63,11 +63,17 @@ void ALocalPlayerController::HandleSelect()
         // will refactor that a button press on menu is requires to issue commands (in combat phase of development)
         if (SelectedUnit)
         {
-            BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
+            FTacticalCommand Command;
+            Command.Type = ETacticalCommandType::Move;
+            Command.SourceUnitID = SelectedUnit->GetUnitID();
+            FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
+            Command.TargetCoords = TileCoords;
+
+            BattleManager->ExecuteCommand(Command);
+            //BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
         }
     }
 }
-
 
 void ALocalPlayerController::SelectUnit(ABaseUnit* NewTargetUnit)
 {

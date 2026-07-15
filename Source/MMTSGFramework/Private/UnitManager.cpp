@@ -39,7 +39,6 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 	//Spawn Unit
 	ABaseUnit* NewUnit = GetWorld()->SpawnActor<ABaseUnit>(UnitClass, UnitSpawnLocationTransform, SpawnParams);
 
-
 	//If unit spawn fails, send log and return null pointer
 	if (!NewUnit)
 	{
@@ -47,6 +46,10 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 		return nullptr;
 	}
 
+	//set unit ID and increment IDs
+	NewUnit->SetUnitID(NextUnitID++);
+
+	//add unit to master unit list
 	Units.Add(NewUnit, GridCoords);
 
 	//subscribe to unit Defeat Event
@@ -54,6 +57,48 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 
 	return NewUnit;
 }
+
+FIntPoint AUnitManager::GetLocationOfUnit(ABaseUnit* TargetUnit)
+{
+	//if unit is not in array, return -1,-1 as a null location
+	if (!Units.Contains(TargetUnit))
+		return FIntPoint(-1, -1);
+	else
+		return Units[TargetUnit];
+};
+
+void AUnitManager::SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
+{
+	//confirm unit is in map update unit location in map
+	if (Units.Contains(TargetUnit))
+		Units[TargetUnit] = NewLocation;
+};
+
+ABaseUnit* AUnitManager::GetUnitByID(int32 UnitID)
+{
+	for (const TPair<ABaseUnit*, FIntPoint>& Pair : Units)
+	{
+		if (Pair.Key->GetUnitID() == UnitID)
+		{
+			return Pair.Key;
+		}
+	}
+
+	return nullptr;
+}
+
+ABaseUnit* AUnitManager::GetUnitByCoords(FIntPoint Coords)
+{
+	for (const TPair<ABaseUnit*, FIntPoint>& Pair : Units)
+	{
+		if (Pair.Value == Coords)
+		{
+			return Pair.Key;
+		}
+	}
+
+	return nullptr;
+};
 
 bool AUnitManager::MoveUnitDownPath(ABaseUnit* MovingUnit, const TArray<FTransform>& MovementPath, FIntPoint EndCoords)
 {

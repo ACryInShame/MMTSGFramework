@@ -14,8 +14,7 @@ ABaseUnit::ABaseUnit()
 void ABaseUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorTickEnabled(false);
-}
+	SetActorTickEnabled(false);}
 
 // Called every frame
 void ABaseUnit::Tick(float DeltaTime)
@@ -82,7 +81,7 @@ int32 ABaseUnit::DealDamage()
 	return AttackPower;
 }
 
-void ABaseUnit::BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords )
+void ABaseUnit::BeginMovement(const TArray<FTransform>& Path, FIntPoint EndCoords )
 {
 	//Check Input
 	if (Path.IsEmpty())

@@ -8,8 +8,8 @@
 #include <UnitSelectionWidget.h>
 #include <TileSelectionWidget.h>
 #include <BattleManager.h>
+#include <TacticalCommands.h>
 #include "LocalPlayerController.generated.h"
-
 
 UCLASS()
 class MMTSGFRAMEWORK_API ALocalPlayerController : public APlayerController

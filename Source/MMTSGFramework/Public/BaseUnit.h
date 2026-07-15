@@ -42,13 +42,19 @@ public:
 
 	//------------Gets/Sets----------------
 	UFUNCTION(BlueprintCallable)
-	int32 GetMovementPoints() { return MovementPoints; }
+	const int32 GetMovementPoints() { return MovementPoints; }
 	UFUNCTION(BlueprintCallable)
-	FString GetUnitName() { return UnitName; }
+	const FString GetUnitName() { return UnitName; }
 	UFUNCTION(BlueprintCallable)
-	int32 GetCurrentHealth() { return CurrentHealth; }
+	const int32 GetCurrentHealth() { return CurrentHealth; }
 	UFUNCTION(BlueprintCallable)
-	int32 GetMaxHealth() { return MaxHealth; }
+	const int32 GetMaxHealth() { return MaxHealth; }
+	UFUNCTION(BlueprintCallable)
+	const int32 GetUnitID() { return UnitID; }
+
+	//----
+	UFUNCTION(BlueprintCallable)
+	void SetUnitID(int32 newID) { UnitID = newID; }
 
 
 	//------------Combat----------------
@@ -72,7 +78,7 @@ public:
 	// ------------Movement----------------
 	//Start movement for unit, initalizes variables for movement
 	UFUNCTION(BlueprintCallable)
-	void BeginMovement(TArray<FTransform> Path, FIntPoint EndCoords);
+	void BeginMovement(const TArray<FTransform>& Path, FIntPoint EndCoords);
 
 	//return the cost to move into a particular terrian type
 	UFUNCTION(BlueprintCallable)
@@ -81,6 +87,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Data")
+	int32 UnitID = INDEX_NONE;
 
 	//Unit ------------Attributes----------------
 	UPROPERTY (EditAnywhere, BlueprintReadOnly, Category = "Attribute")
