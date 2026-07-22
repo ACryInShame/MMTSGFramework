@@ -5,10 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include <BaseUnit.h>
-#include <UnitSelectionWidget.h>
-#include <TileSelectionWidget.h>
 #include <BattleManager.h>
 #include <TacticalCommands.h>
+#include <BattleWidget.h>
 #include "LocalPlayerController.generated.h"
 
 UCLASS()
@@ -20,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleSelect();
+
+	UFUNCTION(BlueprintCallable)
+	void ProcessCommand(ETacticalCommandType ButtonCommand);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -44,11 +46,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Selection")
 	ABattleTile* SelectedTile;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
-	UUnitSelectionWidget* UnitSelectionWidget;
+	// ---- HUD Widgets ----
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
-	UTileSelectionWidget* TileSelectionWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TArray<UBattleWidget*> HUDWidgets; 
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
+	//UUnitSelectionWidget* UnitSelectionWidget;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
+	//UTileSelectionWidget* TileSelectionWidget;
 
 	//UFUNCTION(BlueprintCallable)
 	void UpdateUnitInfo(ABaseUnit* Unit);

@@ -61,18 +61,30 @@ void ALocalPlayerController::HandleSelect()
     
         //Temp gives command to move unit if unit is already slected
         // will refactor that a button press on menu is requires to issue commands (in combat phase of development)
-        if (SelectedUnit)
-        {
-            FTacticalCommand Command;
-            Command.Type = ETacticalCommandType::Move;
-            Command.SourceUnitID = SelectedUnit->GetUnitID();
-            FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
-            Command.TargetCoords = TileCoords;
+        //if (SelectedUnit)
+        //{
+        //    FTacticalCommand Command;
+        //    Command.Type = ETacticalCommandType::Move;
+        //    Command.SourceUnitID = SelectedUnit->GetUnitID();
+        //    FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
+        //    Command.TargetCoords = TileCoords;
 
-            BattleManager->ExecuteCommand(Command);
-            //BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
-        }
+        //    BattleManager->ExecuteCommand(Command);
+        //    //BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
+        //}
     }
+}
+
+void ALocalPlayerController::ProcessCommand(ETacticalCommandType ButtonCommand)
+{
+    const UEnum* EnumPtr = StaticEnum<ETacticalCommandType>();
+
+    FString CommandName = EnumPtr
+        ? EnumPtr->GetNameStringByValue((int64)ButtonCommand)
+        : TEXT("Invalid");
+
+    UE_LOG(LogTemp, Warning, TEXT("Select Action Called: %s"), *CommandName);
+
 }
 
 void ALocalPlayerController::SelectUnit(ABaseUnit* NewTargetUnit)
@@ -89,10 +101,16 @@ void ALocalPlayerController::SelectTile(ABattleTile* NewTargetTile)
 
 void ALocalPlayerController::UpdateUnitInfo(ABaseUnit* Unit)
 {
-    UnitSelectionWidget->UpdateUnitInfo(Unit);
+    for (UBattleWidget* Widget : HUDWidgets)
+    {
+        Widget->UpdateUnitInfo(Unit);
+    }
 }
 
 void ALocalPlayerController::UpdateTileInfo(ABattleTile* Tile)
 {
-    TileSelectionWidget->UpdateTileInfo(Tile);
+    for (UBattleWidget* Widget : HUDWidgets)
+    {
+        Widget->UpdateTileInfo(Tile);
+    }
 }
