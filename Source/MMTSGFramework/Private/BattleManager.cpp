@@ -65,7 +65,7 @@ bool ABattleManager::ExecuteCommand(const FTacticalCommand& Command)
 		break;
 
 	case ETacticalCommandType::Attack:
-		//return ExecuteAttack(Command);
+		return ExecuteAttack(Command);
 		break;
 
 	case ETacticalCommandType::Wait:
@@ -101,6 +101,30 @@ bool ABattleManager::ExecuteMove(const FTacticalCommand& Command)
 		return false;
 	}
 	return MoveCommand(SourceUnit, DestinationTile );
+}
+
+bool ABattleManager::ExecuteAttack(const FTacticalCommand& Command)
+{
+	ABaseUnit* SourceUnit =
+		UnitManager->GetUnitByID(Command.SourceUnitID);
+
+	if (!SourceUnit)
+	{
+
+		UE_LOG(LogTemp, Error, TEXT("No unit in ABattleManager::ExecuteAttack"));
+
+		return false;
+	}
+
+	ABattleTile* DestinationTile = BattleGrid->GetTileByCoords(Command.TargetCoords);
+
+	if (!BattleGrid->ValidTile(DestinationTile))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not a valid Tile in ABattleManager::ExecuteAttack"));
+
+		return false;
+	}
+	return AttackCommand(SourceUnit, DestinationTile);
 }
 
 ABaseUnit* ABattleManager::SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 GridX, int32 GridY)
@@ -219,8 +243,103 @@ TArray<ABattleTile*> ABattleManager::GetMovementRange(ABaseUnit* TargetUnit)
 	return Output;
 }
 
+TArray<ABattleTile*> ABattleManager::GetAttackRange(ABaseUnit* TargetUnit)
+{
+	// ---- Temp for MVP, used movement range calculations but doesnt ignore units ----
+	int32 MovementPoints = TargetUnit->GetMovementPoints();
+	ABattleTile* StartingTile = BattleGrid->GetTileByCoords(UnitManager->GetLocationOfUnit(TargetUnit)); //Get Tile by getting Coords of unit and then getting Tile by coords of unit.
+
+	//Create a list of tiles to check with the current Total movecost to get to that location from start tile
+	TMap<ABattleTile*, int32> TileCheckList;
+	TileCheckList.Add(StartingTile, 0); // add start tile to list with 0 since it is the start thus no cost to move to
+
+	//Create a list of tiles that are confirmed able to move to and the cost to move to them
+	TMap<ABattleTile*, int32> MoveRange;
+	//MoveRange.Add(StartingTile, 0); // add start tile to list with 0 since it is the start thus no cost to move to
+
+	while (!TileCheckList.IsEmpty()) // While list is not empty
+	{
+		//----Get tile with lowest MoveCostFromStart in TileCheckList
+		int32 LowestCost = MAX_int32; //Set to max as highest possible cost
+		ABattleTile* LowestTile = nullptr;
+
+		//Check each tile in TileCheckList to find lowest costed tile
+		for (const TPair<ABattleTile*, int32>& Pair : TileCheckList)
+		{
+			if (Pair.Value < LowestCost)
+			{
+				LowestCost = Pair.Value;
+				LowestTile = Pair.Key;
+			}
+		}
+		//----process lowest tile
+
+		//remove tile from checklist and add to move range
+		TileCheckList.Remove(LowestTile);
+		MoveRange.Add(LowestTile, LowestCost);
+
+		//get lowest tile neighbors and loop through them
+		TArray<ABattleTile*> TileNeighbors = BattleGrid->GetTileNeighbors(LowestTile);
+
+		for (ABattleTile* Tile : TileNeighbors)
+		{
+			//----check is unit can move to tile. ----
+			//If terrain move cost is -1 then unable to move to tile, go to next tile
+			if (TargetUnit->GetMovementCost(Tile->GetTerrainType()) == -1)
+				continue;
+
+			//Removed from Movement calculations as attack is okay with units
+			////if tile is occupied  move to next tile
+			//if (Tile->GetOccupyingUnit() != nullptr)
+			//	continue;
+
+			//move cost to this tile is current move cost to current tile + cost to tmove to this tile
+			int32 NewTileMoveCost = LowestCost + TargetUnit->GetMovementCost(Tile->GetTerrainType());
+
+			//if move cost is greater then unit move points then unable to enter tile
+			if (NewTileMoveCost > MovementPoints)
+				continue;
+
+			// ---- ----
+
+			//if notalready in MoveRange add to MoveRange and checklist
+			if (!MoveRange.Contains(Tile))
+			{
+				MoveRange.Add(Tile, NewTileMoveCost);
+				TileCheckList.Add(Tile, NewTileMoveCost);
+			}
+			else //if already in list, update if current calculations are less then before and add back to TileChecklist if not already in it
+			{
+				if (int32* ExistingMoveCost = MoveRange.Find(Tile)) //used to only need 1 use of Find function
+				{
+					if (NewTileMoveCost < *ExistingMoveCost)
+					{
+						*ExistingMoveCost = NewTileMoveCost;
+						TileCheckList.Add(Tile, NewTileMoveCost); //will update current listing is already in list
+					}
+				}
+			}
+
+		}
+	}
+
+
+	//create list of tiles from TPair
+	TArray<ABattleTile*> Output;
+
+	for (const TPair < ABattleTile*, int32> KeyPair : MoveRange)
+	{
+		Output.Add(KeyPair.Key);
+	}
+
+	return Output;
+}
+
 bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 {
+	//Clear tile highlights
+	BattleGrid->ClearHighlightedTiles();
+
 	//Validate tile input
 	if (!MovingUnit)
 	{
@@ -289,6 +408,75 @@ bool ABattleManager::MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile)
 	return true;
 }
 
+bool ABattleManager::AttackCommand(ABaseUnit* AttackingUnit, ABattleTile* TargetTile)
+{
+	//Clear tile highlights
+	BattleGrid->ClearHighlightedTiles();
+
+	//Validate tile input
+	if (!AttackingUnit)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid Unit in BattleManager::AttackCommand"));
+		return false;
+	}
+	if (!TargetTile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid Tile in BattleManager::AttackCommand"));
+		return false;
+	}
+
+	//Is player Turn?
+
+	//get unit movement range
+	TArray<ABattleTile*> AttackRange = GetAttackRange(AttackingUnit);
+
+	//Is Target Reachable?
+	if (!AttackRange.Contains(TargetTile))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Unable to get attack range from unit in BattleManager::AttackCommand"));
+		return false;
+	}
+
+	//Attack Target Unit
+	//Animations and such will set to play at this time like the movement does
+	//Attack to tile also happens here for AOE attacks, not set in MVP
+
+
+	//Get unit on tile
+	ABaseUnit* TargetUnit = GetUnitByCoords(FIntPoint(TargetTile->GetGridX(), TargetTile->GetGridY()));
+
+	if (TargetUnit)
+	{
+		int32 Damage = AttackingUnit->DealDamage();
+		TargetUnit->ApplyDamage(Damage);
+
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				5.0f,
+				FColor::Yellow,
+				FString::Printf(TEXT("Attacked for %d Damage"), Damage)
+			);
+		}
+	}
+
+	//Attack Tile
+	// 
+	//Nothing for MVP
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			5.0f,
+			FColor::Yellow,
+			FString::Printf(TEXT("Empty Tile hit") )
+		);
+	}
+
+	return true;
+}
+
 void ABattleManager::HightlightMoveRange(ABaseUnit* MovingUnit)
 {
 	BattleGrid->ClearHighlightedTiles();
@@ -298,6 +486,18 @@ void ABattleManager::HightlightMoveRange(ABaseUnit* MovingUnit)
 	for (ABattleTile* Tile : MoveRange)
 	{
 		Tile->SetHighlightState(ETileHighlightState::MoveRange);
+	}
+}
+
+void ABattleManager::HightlightAttackRange(ABaseUnit* AttackinhgUnit)
+{
+	BattleGrid->ClearHighlightedTiles();
+
+	TArray<ABattleTile*> AttackRange = GetAttackRange(AttackinhgUnit);
+
+	for (ABattleTile* Tile : AttackRange)
+	{
+		Tile->SetHighlightState(ETileHighlightState::AttackRange);
 	}
 }
 

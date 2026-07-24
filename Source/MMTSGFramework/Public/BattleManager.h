@@ -39,6 +39,9 @@ public:
 	//process commands given by PlayerController or AI
 	bool ExecuteMove(const FTacticalCommand& Command);
 
+	//process commands given by PlayerController or AI
+	bool ExecuteAttack(const FTacticalCommand& Command);
+
 	//Spawn a unit using unit manager at location on grid
 	UFUNCTION(BlueprintCallable)
 	ABaseUnit* SpawnUnitOnGridByCoords(TSubclassOf<ABaseUnit> UnitClass, int32 CoordsX, int32 CoordsY);
@@ -47,14 +50,26 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool MoveCommand(ABaseUnit* MovingUnit, ABattleTile* TargetTile);
 
+	//Command a unit to attack a tile, returns true or flase if unit was able to attack the location
+	UFUNCTION(BlueprintCallable)
+	bool AttackCommand(ABaseUnit* AttackingUnit, ABattleTile* TargetTile);
+
 	// ---- Grid and Tile Functions ---
 	//Returns list of tiles based on the movement range of unit, takes terrain into account
 	UFUNCTION(BlueprintCallable)
 	TArray<ABattleTile*> GetMovementRange(ABaseUnit* TargetUnit);
 
+	//Returns list of tiles based on the attack range of unit, takes terrain into account
+	UFUNCTION(BlueprintCallable)
+	TArray<ABattleTile*> GetAttackRange(ABaseUnit* TargetUnit);
+
 	//highlights tiles based on the movement range of unit, takes terrain into account
 	UFUNCTION(BlueprintCallable)
 	void HightlightMoveRange(ABaseUnit* MovingUnit);
+
+	//highlights tiles based on the attack range of unit, takes terrain into account
+	UFUNCTION(BlueprintCallable)
+	void HightlightAttackRange(ABaseUnit* AttackingUnit);
 
 	//returns the tile the unit occupies
 	UFUNCTION(BlueprintCallable)
