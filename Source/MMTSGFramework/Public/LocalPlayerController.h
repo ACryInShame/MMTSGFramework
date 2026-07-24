@@ -46,16 +46,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Selection")
 	ABattleTile* SelectedTile;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Selection")
+	ETacticalCommandType CommandMode;
+
 	// ---- HUD Widgets ----
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TArray<UBattleWidget*> HUDWidgets; 
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
-	//UUnitSelectionWidget* UnitSelectionWidget;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Selection")
-	//UTileSelectionWidget* TileSelectionWidget;
 
 	//UFUNCTION(BlueprintCallable)
 	void UpdateUnitInfo(ABaseUnit* Unit);
@@ -63,4 +60,8 @@ protected:
 	//UFUNCTION(BlueprintCallable)
 	void UpdateTileInfo(ABattleTile* Tile);
 
+	void ProcessMoveCommand();
+	void ProcessAttackCommand();
+	void ProcessWaitCommand();
+	void ProcessNoneCommand();
 };

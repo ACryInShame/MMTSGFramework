@@ -3,20 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include <BattleWidget.h>
 #include "UnitSelectionWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MMTSGFRAMEWORK_API UUnitSelectionWidget : public UUserWidget
+class MMTSGFRAMEWORK_API UUnitSelectionWidget : public UBattleWidget
 {
 	GENERATED_BODY()
 	
 public:
 
-    UFUNCTION(BlueprintImplementableEvent)
     void UpdateUnitInfo(ABaseUnit* NewUnit);
 
     UFUNCTION(BlueprintImplementableEvent)
