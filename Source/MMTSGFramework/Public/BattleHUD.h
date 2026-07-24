@@ -3,10 +3,12 @@
 #pragma once
 
 #include <BattleWidget.h>
-#include <LocalPlayerController.h>
+//#include <LocalPlayerController.h>
 #include "CoreMinimal.h"
 #include "BattleHUD.generated.h"
 
+// forward declaration for flow of commands
+class ALocalPlayerController;
 /**
  * 
  */
@@ -23,7 +25,7 @@ public:
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player", meta = (ExposeOnSpawn = "true"))
-	ALocalPlayerController* OwningPlayer;
+	ALocalPlayerController* ControllingPlayer;
 
 
 };

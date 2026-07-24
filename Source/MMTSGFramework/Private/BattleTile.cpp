@@ -67,6 +67,11 @@ void ABattleTile::UpdateMaterial()
         DynamicMaterial->SetVectorParameterValue("HighlightColor", FLinearColor::Blue);
         DynamicMaterial->SetScalarParameterValue("HighlightStrength", 0.5f);
         break;
+
+    case ETileHighlightState::AttackRange:
+        DynamicMaterial->SetVectorParameterValue("HighlightColor", FLinearColor::Red);
+        DynamicMaterial->SetScalarParameterValue("HighlightStrength", 0.9f);
+        break;
     }
 }
 

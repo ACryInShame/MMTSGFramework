@@ -7,7 +7,7 @@
 #include <BaseUnit.h>
 #include <BattleManager.h>
 #include <TacticalCommands.h>
-#include <BattleWidget.h>
+#include <BattleHUD.h>
 #include "LocalPlayerController.generated.h"
 
 UCLASS()
@@ -19,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleSelect();
+
+	UFUNCTION(BlueprintCallable)
+	void HandlePlayerInput();
 
 	UFUNCTION(BlueprintCallable)
 	void ProcessCommand(ETacticalCommandType ButtonCommand);
@@ -51,8 +54,8 @@ protected:
 
 	// ---- HUD Widgets ----
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	TArray<UBattleWidget*> HUDWidgets; 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (ExposeOnSpawn = "true"), meta = (AllowPrivateAccess = "true"))
+	UBattleHUD* BattleHUD;
 
 	//UFUNCTION(BlueprintCallable)
 	void UpdateUnitInfo(ABaseUnit* Unit);
@@ -60,8 +63,11 @@ protected:
 	//UFUNCTION(BlueprintCallable)
 	void UpdateTileInfo(ABattleTile* Tile);
 
+	// ---- Commands ---
 	void ProcessMoveCommand();
 	void ProcessAttackCommand();
 	void ProcessWaitCommand();
 	void ProcessNoneCommand();
+	void HandleMoveSelect();
+	void HandleAttackSelect();
 };

@@ -24,4 +24,7 @@ public:
 
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void UpdateTurn();
+
+    UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+    void UpdateCommandMode(ETacticalCommandType NewCommandMode);
 };

@@ -2,8 +2,12 @@
 
 
 #include "BattleHUD.h"
+#include <LocalPlayerController.h>
 
 void UBattleHUD::ProcessActionCommand(ETacticalCommandType ButtonCommand)
 {
-    OwningPlayer->ProcessCommand(ButtonCommand);
+    if (ControllingPlayer)
+        ControllingPlayer->ProcessCommand(ButtonCommand);
+    else
+        UE_LOG(LogTemp, Warning, TEXT("ControllingPlayer is invalid"));
 }

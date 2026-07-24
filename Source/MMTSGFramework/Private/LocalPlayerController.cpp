@@ -44,6 +44,30 @@ void ALocalPlayerController::HandleSelect()
     }
 }
 
+void ALocalPlayerController::HandlePlayerInput()
+{
+    switch (CommandMode)
+    {
+    case ETacticalCommandType::None:
+        HandleSelect();
+        break;
+    case ETacticalCommandType::Move:
+        HandleMoveSelect();
+        break;
+
+    case ETacticalCommandType::Attack:
+        HandleAttackSelect();
+        break;
+
+    case ETacticalCommandType::Wait:
+        
+        break;
+
+    default:
+        break;
+    }
+}
+
 void ALocalPlayerController::SelectUnit(ABaseUnit* NewTargetUnit)
 {
     if (NewTargetUnit != SelectedUnit)
@@ -125,18 +149,12 @@ void ALocalPlayerController::SelectTile(ABattleTile* NewTargetTile)
 
 void ALocalPlayerController::UpdateUnitInfo(ABaseUnit* Unit)
 {
-    for (UBattleWidget* Widget : HUDWidgets)
-    {
-        Widget->UpdateUnitInfo(Unit);
-    }
+    BattleHUD->UpdateUnitInfo(Unit);
 }
 
 void ALocalPlayerController::UpdateTileInfo(ABattleTile* Tile)
 {
-    for (UBattleWidget* Widget : HUDWidgets)
-    {
-        Widget->UpdateTileInfo(Tile);
-    }
+    BattleHUD->UpdateTileInfo(Tile);
 }
 
 void ALocalPlayerController::ProcessCommand(ETacticalCommandType ButtonCommand)
@@ -174,29 +192,141 @@ void ALocalPlayerController::ProcessCommand(ETacticalCommandType ButtonCommand)
 
 void ALocalPlayerController::ProcessNoneCommand()
 {
+    CommandMode = ETacticalCommandType::None;
+    BattleHUD->UpdateCommandMode(CommandMode);
 }
 
 void ALocalPlayerController::ProcessMoveCommand()
 {
-    //Temp gives command to move unit if unit is already slected
-    // will refactor that a button press on menu is requires to issue commands (in combat phase of development)
-    //if (SelectedUnit)
-    //{
-    //    FTacticalCommand Command;
-    //    Command.Type = ETacticalCommandType::Move;
-    //    Command.SourceUnitID = SelectedUnit->GetUnitID();
-    //    FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
-    //    Command.TargetCoords = TileCoords;
+    //Change command to move highlight tiles
+    CommandMode = ETacticalCommandType::Move;
 
-    //    BattleManager->ExecuteCommand(Command);
-    //    //BattleManager->MoveCommand(SelectedUnit, NewSelectedTile);
-    //}
+    if (SelectedUnit)
+        BattleManager->HightlightMoveRange(SelectedUnit);
+    else
+        UE_LOG(LogTemp, Error, TEXT("LocalPlayerController :: ProcessMoveCommand : SelectedUnit is invalid"));
+
+    BattleHUD->UpdateCommandMode(CommandMode);
 }
 
 void ALocalPlayerController::ProcessAttackCommand()
 {
+    //Change command to attack highlight tiles
+    CommandMode = ETacticalCommandType::Attack;
+
+    if (SelectedUnit)
+        BattleManager->HightlightAttackRange(SelectedUnit);
+    else
+        UE_LOG(LogTemp, Error, TEXT("LocalPlayerController :: ProcessAttackCommand : SelectedUnit is invalid"));
+
+    BattleHUD->UpdateCommandMode(CommandMode);
 }
 
 void ALocalPlayerController::ProcessWaitCommand()
 {
+}
+
+void ALocalPlayerController::HandleMoveSelect()
+{
+    //Get selected actor
+    FHitResult Hit;
+
+    bool bHit = GetHitResultUnderCursor(
+        ECollisionChannel::ECC_Visibility,
+        false,
+        Hit
+    );
+
+    if (!bHit)
+    {
+        return;
+    }
+
+    //cannot select unit to move to
+    if (ABaseUnit* NewSelectedUnit = Cast<ABaseUnit>(Hit.GetActor()))
+    {
+        UE_LOG(
+            LogTemp,
+            Log,
+            TEXT("Unable to move to tile with Unit: %s"),
+            *NewSelectedUnit->GetName()
+        );
+    }
+
+    //select tile to move to
+    if (ABattleTile* NewSelectedTile = Cast<ABattleTile>(Hit.GetActor()))
+    {
+        FTacticalCommand Command;
+        Command.Type = ETacticalCommandType::Move;
+        Command.SourceUnitID = SelectedUnit->GetUnitID();
+        FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
+        Command.TargetCoords = TileCoords;
+
+        if (BattleManager->ExecuteCommand(Command))
+        {
+            ProcessNoneCommand();
+        }
+    }
+}
+
+void ALocalPlayerController::HandleAttackSelect()
+{
+    //Get selected actor
+    FHitResult Hit;
+
+    bool bHit = GetHitResultUnderCursor(
+        ECollisionChannel::ECC_Visibility,
+        false,
+        Hit
+    );
+
+    if (!bHit)
+    {
+        return;
+    }
+
+    ABattleTile* NewSelectedTile = nullptr;
+
+    //If unit seelcted translate Unit selection to Tile
+    if (ABaseUnit* NewSelectedUnit = Cast<ABaseUnit>(Hit.GetActor()))
+    {
+        if (NewSelectedUnit)
+        {
+            NewSelectedTile = BattleManager->GetTileOfUnit(NewSelectedUnit);
+            UE_LOG(LogTemp, Warning, TEXT("ALocalPlayerController::HandleAttackSelect unit selected"));
+
+        }
+        else
+            UE_LOG(LogTemp, Warning, TEXT("ALocalPlayerController::HandleAttackSelect no unit selected"));
+
+    }
+
+    //Select Tile to attack
+    if (!NewSelectedTile)
+    {
+        NewSelectedTile = Cast<ABattleTile>(Hit.GetActor());
+        UE_LOG(LogTemp, Warning, TEXT("ALocalPlayerController::HandleAttackSelect Tile selected"));
+    }
+
+    //check for valid tile and then process attack
+    if (NewSelectedTile)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("ALocalPlayerController::HandleAttackSelect attack command given"));
+        FTacticalCommand Command;
+        Command.Type = ETacticalCommandType::Attack;
+        Command.SourceUnitID = SelectedUnit->GetUnitID();
+        FIntPoint TileCoords(NewSelectedTile->GetGridX(), NewSelectedTile->GetGridY());
+        Command.TargetCoords = TileCoords;
+
+        if (BattleManager->ExecuteCommand(Command))
+        {
+            ProcessNoneCommand();
+        }
+        else
+            UE_LOG(LogTemp, Error, TEXT("ALocalPlayerController::HandleAttackSelect attack command failed"));
+    }
+    else
+        UE_LOG(LogTemp, Error, TEXT("ALocalPlayerController::HandleAttackSelect no Tile selected"));
+
+
 }

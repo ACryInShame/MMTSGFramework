@@ -5,5 +5,8 @@
 
 void UActionSelectionBarWidget::SelectAction(ETacticalCommandType ButtonCommand)
 {
-    ParentHUD->ProcessActionCommand(ButtonCommand);
+    if (ParentHUD)
+        ParentHUD->ProcessActionCommand(ButtonCommand);
+    else
+        UE_LOG(LogTemp, Warning, TEXT("ParentHUD is invalid"));
 }
