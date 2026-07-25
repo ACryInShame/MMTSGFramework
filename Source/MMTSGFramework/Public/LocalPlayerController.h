@@ -70,4 +70,9 @@ protected:
 	void ProcessNoneCommand();
 	void HandleMoveSelect();
 	void HandleAttackSelect();
+	void HandleWaitSelect();
+
+	//End Turn already taken by UE
+	UFUNCTION(BlueprintCallable)
+	void EndTurnActions();
 };

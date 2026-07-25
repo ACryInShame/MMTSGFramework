@@ -10,7 +10,7 @@
 
 class ABaseUnit;
 
-//---- Event Delegates ----
+// ---- Event Delegates ----
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 	FOnUnitDefeated,
@@ -51,6 +51,10 @@ public:
 	const int32 GetMaxHealth() { return MaxHealth; }
 	UFUNCTION(BlueprintCallable)
 	const int32 GetUnitID() { return UnitID; }
+	UFUNCTION(BlueprintCallable)
+	const bool GetHasMoved() { return HasMoved; }
+	UFUNCTION(BlueprintCallable)
+	const bool GetHasAttacked() { return HasAttacked; }
 
 	//----
 	UFUNCTION(BlueprintCallable)
@@ -67,6 +71,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DefeatUnit();
 
+	UFUNCTION(BlueprintCallable)
+	void SkipTurn();
+
+	//process the end of a player turn resetting units (End turn name taken by UE)
+	UFUNCTION(BlueprintCallable)
+	void EndturnActions();
 
 	//------------Events----------------
 	UPROPERTY(BlueprintAssignable, Category = "Events")
@@ -112,6 +122,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
 	TMap<ETileTerrainType, int32> MovementCosts;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool HasMoved = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool HasAttacked = false;
 
 
 	//Unit ------------Movement----------------

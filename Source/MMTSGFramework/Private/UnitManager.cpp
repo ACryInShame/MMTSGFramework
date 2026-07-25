@@ -25,6 +25,13 @@ void AUnitManager::Tick(float DeltaTime)
 
 }
 
+void AUnitManager::EndTurn()
+{
+	for (const auto& Pair : Units) {
+		Pair.Key->EndturnActions();
+	}
+}
+
 void AUnitManager::DestroyUnit()
 {
 }

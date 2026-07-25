@@ -26,8 +26,14 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	// ---- Player Turns and Rounds ----
 
-	// ---- Units Functions ----
+	//process the end of a player turn resetting units
+	UFUNCTION(BlueprintCallable)
+	void EndTurn();
+
+
+	//----- Units Functions -----
 	UFUNCTION(BlueprintCallable)
 	void DestroyUnit();
 
@@ -41,6 +47,7 @@ public:
 
 	//Returns Unit based on X,Y location of the unit or Nullptr if unit is not found
 	ABaseUnit* GetUnitByCoords(FIntPoint Coords);
+	ABaseUnit* GetUnitByCoords(int32 X, int32 Y) { return GetUnitByCoords( FIntPoint(X, Y) ); };
 
 	UFUNCTION(BlueprintCallable)
 	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation);
@@ -52,7 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool MoveUnitDownPath(ABaseUnit* MovingUnit, const TArray<FTransform>& NewLocation, FIntPoint EndCoords);
 
-	// ---- Delegate Events ----
+	//----- Delegate Events -----
 	UFUNCTION(Category = "Events")
 	void HandleMovementFinished(ABaseUnit* Unit, FIntPoint EndCoords);
 

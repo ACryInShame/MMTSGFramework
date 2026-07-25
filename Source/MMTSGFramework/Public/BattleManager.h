@@ -23,15 +23,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//---- Gets and Sets ----
+	// ---- Gets and Sets ----
 	UFUNCTION(BlueprintCallable)
 	ABattleGridManager* GetBattleGrid() { return BattleGrid; }
 
 	UFUNCTION(BlueprintCallable)
 	AUnitManager* GetUnitManager() { return UnitManager; }
 
+	// ---- Player Turns and Rounds ----
 
-	//---- Unit functions and commands ----
+	//process the end of a player turn
+	UFUNCTION(BlueprintCallable)
+	void EndTurn();
+
+	// ---- Unit functions and commands ----
 
 	//process commands given by PlayerController or AI
 	bool ExecuteCommand(const FTacticalCommand& Command);

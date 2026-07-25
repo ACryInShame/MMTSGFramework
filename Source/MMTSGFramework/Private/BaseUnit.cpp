@@ -76,8 +76,30 @@ void ABaseUnit::DefeatUnit()
 	OnUnitDefeated.Broadcast(this);
 }
 
+void ABaseUnit::SkipTurn()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			5.0f,
+			FColor::Yellow,
+			FString::Printf(TEXT("Skipped Turn for Unit"))
+		);
+	}
+	HasAttacked = true;
+	HasMoved = true;
+}
+
+void ABaseUnit::EndturnActions()
+{
+	HasAttacked = false;
+	HasMoved = false;
+}
+
 int32 ABaseUnit::DealDamage()
 {
+	HasAttacked = true;
 	return AttackPower;
 }
 
@@ -117,6 +139,7 @@ void ABaseUnit::MovementComplete()
 {
 	SetActorTickEnabled(false);
 	bMoving = false;
+	HasMoved = true;
 
 	OnMovementFinished.Broadcast(this, MovementEndCoords);
 }

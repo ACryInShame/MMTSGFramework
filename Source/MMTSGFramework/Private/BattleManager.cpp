@@ -56,6 +56,12 @@ void ABattleManager::Tick(float DeltaTime)
 
 }
 
+void ABattleManager::EndTurn()
+{
+	//reset all units to be able to act again
+	UnitManager->EndTurn();
+}
+
 bool ABattleManager::ExecuteCommand(const FTacticalCommand& Command)
 {
 	switch (Command.Type)

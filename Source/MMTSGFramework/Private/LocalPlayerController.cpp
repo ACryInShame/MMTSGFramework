@@ -60,7 +60,7 @@ void ALocalPlayerController::HandlePlayerInput()
         break;
 
     case ETacticalCommandType::Wait:
-        
+        HandleWaitSelect();
         break;
 
     default:
@@ -174,11 +174,17 @@ void ALocalPlayerController::ProcessCommand(ETacticalCommandType ButtonCommand)
         ProcessNoneCommand();
         break;
     case ETacticalCommandType::Move:
-        ProcessMoveCommand();
+        if (!SelectedUnit->GetHasMoved())
+            ProcessMoveCommand();
+        else
+            UE_LOG(LogTemp, Warning, TEXT("Unit Has already used the %s Command This Turn"), *CommandName);
         break;
 
     case ETacticalCommandType::Attack:
-        ProcessAttackCommand();
+        if (!SelectedUnit->GetHasAttacked())
+            ProcessAttackCommand();
+        else
+            UE_LOG(LogTemp, Warning, TEXT("Unit Has already used the %s Command This Turn"), *CommandName);
         break;
 
     case ETacticalCommandType::Wait:
@@ -224,6 +230,9 @@ void ALocalPlayerController::ProcessAttackCommand()
 
 void ALocalPlayerController::ProcessWaitCommand()
 {
+    CommandMode = ETacticalCommandType::None;
+    SelectedUnit->SkipTurn();
+    BattleHUD->UpdateCommandMode(CommandMode);
 }
 
 void ALocalPlayerController::HandleMoveSelect()
@@ -329,4 +338,20 @@ void ALocalPlayerController::HandleAttackSelect()
         UE_LOG(LogTemp, Error, TEXT("ALocalPlayerController::HandleAttackSelect no Tile selected"));
 
 
+}
+
+void ALocalPlayerController::HandleWaitSelect()
+{
+    if (!SelectedUnit->GetHasMoved() || !SelectedUnit->GetHasAttacked())
+    {
+        ProcessCommand(ETacticalCommandType::Wait);
+    }
+    else
+        UE_LOG(LogTemp, Warning, TEXT("ALocalPlayerController::HandleWaitSelect Unit already done turn"));
+
+}
+
+void ALocalPlayerController::EndTurnActions()
+{
+    BattleManager->EndTurn();
 }
