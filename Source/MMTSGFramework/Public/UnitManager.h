@@ -30,7 +30,7 @@ public:
 
 	//process the end of a player turn resetting units
 	UFUNCTION(BlueprintCallable)
-	void EndTurn();
+	void EndTurnActions();
 
 
 	//----- Units Functions -----
@@ -43,17 +43,17 @@ public:
 	//   - Unit sets and gets -
 	UFUNCTION(BlueprintCallable)
 	//Returns the X,Y location of the unit or -1,-1 if unit location is not found
-	FIntPoint GetLocationOfUnit(ABaseUnit* TargetUnit);
+	FIntPoint GetLocationOfUnit(ABaseUnit* TargetUnit) const;
 
 	//Returns Unit based on X,Y location of the unit or Nullptr if unit is not found
-	ABaseUnit* GetUnitByCoords(FIntPoint Coords);
-	ABaseUnit* GetUnitByCoords(int32 X, int32 Y) { return GetUnitByCoords( FIntPoint(X, Y) ); };
+	ABaseUnit* GetUnitByCoords(FIntPoint Coords) const;
+	ABaseUnit* GetUnitByCoords(int32 X, int32 Y) const { return GetUnitByCoords( FIntPoint(X, Y) ); };
 
 	UFUNCTION(BlueprintCallable)
 	void SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation);
 
 	UFUNCTION(BlueprintCallable)
-	ABaseUnit* GetUnitByID(int32 UnitID);
+	ABaseUnit* GetUnitByID(int32 UnitID) const;
 
 	//Move unit to follow path, return true if unit was able to move.
 	UFUNCTION(BlueprintCallable)

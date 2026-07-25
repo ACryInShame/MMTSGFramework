@@ -25,16 +25,16 @@ public:
 
 	// ---- Gets and Sets ----
 	UFUNCTION(BlueprintCallable)
-	ABattleGridManager* GetBattleGrid() { return BattleGrid; }
+	ABattleGridManager* GetBattleGrid() const { return BattleGrid; }
 
 	UFUNCTION(BlueprintCallable)
-	AUnitManager* GetUnitManager() { return UnitManager; }
+	AUnitManager* GetUnitManager() const { return UnitManager; }
 
 	// ---- Player Turns and Rounds ----
 
 	//process the end of a player turn
 	UFUNCTION(BlueprintCallable)
-	void EndTurn();
+	void EndTurnActions();
 
 	// ---- Unit functions and commands ----
 
@@ -96,7 +96,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void initialization();
+	void Initialize();
 
 	// ---- Manager Variables ----
 	UPROPERTY() //To prevent Unreal Engine Garbage colltion from accidently removing it

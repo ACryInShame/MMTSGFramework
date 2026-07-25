@@ -183,7 +183,7 @@ bool ABattleGridManager::ValidCoordsInGrid(int32 X, int32 Y) const
 	return true;
 }
 
-bool ABattleGridManager::ValidTile(ABattleTile* Tile)
+bool ABattleGridManager::ValidTile(ABattleTile* Tile) const
 {
 	//is input valid
 	if (!Tile)

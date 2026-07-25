@@ -24,6 +24,7 @@ void ABattleManager::BeginPlay()
 	if (!BattleGridBlueprint)
 	{
 		UE_LOG(LogTemp, Error, TEXT("BattleGridBlueprint not assigned."));
+		return;
 	}
 
 	BattleGrid = GetWorld()->SpawnActor<ABattleGridManager>(BattleGridBlueprint,
@@ -44,7 +45,7 @@ void ABattleManager::BeginPlay()
 		&ABattleManager::HandleMovementFinished);
 }
 
-void ABattleManager::initialization()
+void ABattleManager::Initialize()
 {
 
 }
@@ -56,10 +57,10 @@ void ABattleManager::Tick(float DeltaTime)
 
 }
 
-void ABattleManager::EndTurn()
+void ABattleManager::EndTurnActions()
 {
 	//reset all units to be able to act again
-	UnitManager->EndTurn();
+	UnitManager->EndTurnActions();
 }
 
 bool ABattleManager::ExecuteCommand(const FTacticalCommand& Command)
@@ -456,6 +457,7 @@ bool ABattleManager::AttackCommand(ABaseUnit* AttackingUnit, ABattleTile* Target
 		int32 Damage = AttackingUnit->DealDamage();
 		TargetUnit->ApplyDamage(Damage);
 
+		#if !UE_BUILD_SHIPPING
 		if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(
@@ -465,11 +467,13 @@ bool ABattleManager::AttackCommand(ABaseUnit* AttackingUnit, ABattleTile* Target
 				FString::Printf(TEXT("Attacked for %d Damage"), Damage)
 			);
 		}
+		#endif	
 	}
 
 	//Attack Tile
 	// 
 	//Nothing for MVP
+	#if !UE_BUILD_SHIPPING
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(
@@ -479,6 +483,7 @@ bool ABattleManager::AttackCommand(ABaseUnit* AttackingUnit, ABattleTile* Target
 			FString::Printf(TEXT("Empty Tile hit") )
 		);
 	}
+	#endif
 
 	return true;
 }

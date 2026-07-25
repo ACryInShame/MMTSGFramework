@@ -38,11 +38,7 @@ public:
 
 	//Check if tile is valid in the grid
 	UFUNCTION(BlueprintCallable)
-	bool ValidTile(ABattleTile* Tile);
-
-	//UFUNCTION(BlueprintCallable)
-	////returns Tile at Coords
-	//FTransform GetTileSpawnLocation(int32 X, int32 Y);
+	bool ValidTile(ABattleTile* Tile) const;
 
 	UFUNCTION(BlueprintCallable)
 	TArray<ABattleTile*> GetTileNeighbors(ABattleTile* Tile);

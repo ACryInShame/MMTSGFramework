@@ -30,12 +30,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetHighlightState(ETileHighlightState NewState) { HighLightState = NewState; UpdateMaterial(); }
 
-	TileShapeType GetTileShapeType() { return TileShape; }
-	int32 GetGridX() { return GridX; }
-	int32 GetGridY() { return GridY; }
-	UStaticMeshComponent* GetTileMesh() {return TileMesh;};
-	ETileTerrainType GetTerrainType() { return TerrainType; }
-	ABaseUnit* GetOccupyingUnit() { return OccupyingUnit; }
+	TileShapeType GetTileShapeType() const  { return TileShape; }
+	int32 GetGridX() const  { return GridX; }
+	int32 GetGridY() const { return GridY; }
+	UStaticMeshComponent* GetTileMesh() const {return TileMesh;};
+	ETileTerrainType GetTerrainType() const { return TerrainType; }
+	ABaseUnit* GetOccupyingUnit() const { return OccupyingUnit; }
 
 	UFUNCTION(BlueprintCallable)
 	FTransform GetUnitAnchorTransform() const;

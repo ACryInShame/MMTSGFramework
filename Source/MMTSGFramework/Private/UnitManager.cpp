@@ -25,10 +25,10 @@ void AUnitManager::Tick(float DeltaTime)
 
 }
 
-void AUnitManager::EndTurn()
+void AUnitManager::EndTurnActions()
 {
 	for (const auto& Pair : Units) {
-		Pair.Key->EndturnActions();
+		Pair.Key->EndTurnActions();
 	}
 }
 
@@ -65,7 +65,7 @@ ABaseUnit* AUnitManager::SpawnUnit(TSubclassOf<ABaseUnit> UnitClass, FTransform 
 	return NewUnit;
 }
 
-FIntPoint AUnitManager::GetLocationOfUnit(ABaseUnit* TargetUnit)
+FIntPoint AUnitManager::GetLocationOfUnit(ABaseUnit* TargetUnit) const
 {
 	//if unit is not in array, return -1,-1 as a null location
 	if (!Units.Contains(TargetUnit))
@@ -81,7 +81,7 @@ void AUnitManager::SetUnitLocation(ABaseUnit* TargetUnit, FIntPoint NewLocation)
 		Units[TargetUnit] = NewLocation;
 };
 
-ABaseUnit* AUnitManager::GetUnitByID(int32 UnitID)
+ABaseUnit* AUnitManager::GetUnitByID(int32 UnitID) const
 {
 	for (const TPair<ABaseUnit*, FIntPoint>& Pair : Units)
 	{
@@ -94,7 +94,7 @@ ABaseUnit* AUnitManager::GetUnitByID(int32 UnitID)
 	return nullptr;
 }
 
-ABaseUnit* AUnitManager::GetUnitByCoords(FIntPoint Coords)
+ABaseUnit* AUnitManager::GetUnitByCoords(FIntPoint Coords) const
 {
 	for (const TPair<ABaseUnit*, FIntPoint>& Pair : Units)
 	{

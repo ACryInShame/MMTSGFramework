@@ -42,19 +42,19 @@ public:
 
 	//------------Gets/Sets----------------
 	UFUNCTION(BlueprintCallable)
-	const int32 GetMovementPoints() { return MovementPoints; }
+	int32 GetMovementPoints() const { return MovementPoints; }
 	UFUNCTION(BlueprintCallable)
-	const FString GetUnitName() { return UnitName; }
+	FString GetUnitName() const  { return UnitName; }
 	UFUNCTION(BlueprintCallable)
-	const int32 GetCurrentHealth() { return CurrentHealth; }
+	int32 GetCurrentHealth() const  { return CurrentHealth; }
 	UFUNCTION(BlueprintCallable)
-	const int32 GetMaxHealth() { return MaxHealth; }
+	int32 GetMaxHealth() const  { return MaxHealth; }
 	UFUNCTION(BlueprintCallable)
-	const int32 GetUnitID() { return UnitID; }
+	int32 GetUnitID() const  { return UnitID; }
 	UFUNCTION(BlueprintCallable)
-	const bool GetHasMoved() { return HasMoved; }
+	bool GetHasMoved() const  { return HasMoved; }
 	UFUNCTION(BlueprintCallable)
-	const bool GetHasAttacked() { return HasAttacked; }
+	bool GetHasAttacked() const  { return HasAttacked; }
 
 	//----
 	UFUNCTION(BlueprintCallable)
@@ -76,7 +76,7 @@ public:
 
 	//process the end of a player turn resetting units (End turn name taken by UE)
 	UFUNCTION(BlueprintCallable)
-	void EndturnActions();
+	void EndTurnActions();
 
 	//------------Events----------------
 	UPROPERTY(BlueprintAssignable, Category = "Events")

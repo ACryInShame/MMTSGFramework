@@ -204,6 +204,9 @@ void ALocalPlayerController::ProcessNoneCommand()
 
 void ALocalPlayerController::ProcessMoveCommand()
 {
+    if (!SelectedUnit)
+        return;
+
     //Change command to move highlight tiles
     CommandMode = ETacticalCommandType::Move;
 
@@ -217,6 +220,9 @@ void ALocalPlayerController::ProcessMoveCommand()
 
 void ALocalPlayerController::ProcessAttackCommand()
 {
+    if (!SelectedUnit)
+        return;
+
     //Change command to attack highlight tiles
     CommandMode = ETacticalCommandType::Attack;
 
@@ -230,6 +236,9 @@ void ALocalPlayerController::ProcessAttackCommand()
 
 void ALocalPlayerController::ProcessWaitCommand()
 {
+    if (!SelectedUnit)
+        return;
+
     CommandMode = ETacticalCommandType::None;
     SelectedUnit->SkipTurn();
     BattleHUD->UpdateCommandMode(CommandMode);
@@ -342,6 +351,9 @@ void ALocalPlayerController::HandleAttackSelect()
 
 void ALocalPlayerController::HandleWaitSelect()
 {
+    if (!SelectedUnit)
+        return;
+
     if (!SelectedUnit->GetHasMoved() || !SelectedUnit->GetHasAttacked())
     {
         ProcessCommand(ETacticalCommandType::Wait);
@@ -353,5 +365,5 @@ void ALocalPlayerController::HandleWaitSelect()
 
 void ALocalPlayerController::EndTurnActions()
 {
-    BattleManager->EndTurn();
+    BattleManager->EndTurnActions();
 }

@@ -78,20 +78,22 @@ void ABaseUnit::DefeatUnit()
 
 void ABaseUnit::SkipTurn()
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			5.0f,
-			FColor::Yellow,
-			FString::Printf(TEXT("Skipped Turn for Unit"))
-		);
-	}
+	#if !UE_BUILD_SHIPPING
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				5.0f,
+				FColor::Yellow,
+				FString::Printf(TEXT("Skipped Turn for Unit"))
+			);
+		}
+	#endif
 	HasAttacked = true;
 	HasMoved = true;
 }
 
-void ABaseUnit::EndturnActions()
+void ABaseUnit::EndTurnActions()
 {
 	HasAttacked = false;
 	HasMoved = false;
