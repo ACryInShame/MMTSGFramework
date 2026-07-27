@@ -7,7 +7,7 @@ The framework follows an object-oriented, manager-based architecture that emphas
 
 Although multiplayer is not fully implemented in the MVP, the architecture has been designed with multiplayer in mind. Commands are represented as data rather than direct object references wherever practical, allowing future replication without requiring significant refactoring.
 
-Primary Goals
+## Primary Goals
 
 The framework is designed around several objectives:
 - Create reusable tactical strategy systems instead of game-specific logic.
@@ -17,7 +17,7 @@ The framework is designed around several objectives:
 - Keep gameplay logic centralized and authoritative.
 - Provide an architecture suitable for future multiplayer support.
 
-Current Architecture
+## Current Architecture
 
 The framework is organized into specialized managers that each own a specific responsibility. 
 <pre>
@@ -33,7 +33,7 @@ Grid Manager   Unit Manager
 Battle Tiles    Base Units
 </pre>
    
-Player Controller
+## Player Controller
 
 Responsible for:
 
@@ -43,7 +43,7 @@ Sending gameplay commands to the Battle Manager
 
 The Player Controller intentionally avoids implementing game rules. It serves primarily as the interface between the player and the gameplay systems.
 
-Battle Manager
+## Battle Manager
 
 The Battle Manager is the central authority of the framework.
 
@@ -57,7 +57,7 @@ Maintaining battle state
 
 Most gameplay decisions flow through the Battle Manager to prevent individual systems from becoming tightly coupled.
 
-Grid Manager
+## Grid Manager
 
 Responsible for the battlefield.
 
@@ -73,7 +73,7 @@ Future pathfinding
 
 Battle Tiles are independent actors that contain terrain and occupancy information while remaining reusable across different maps.
 
-Unit Manager
+## Unit Manager
 
 Acts as the owner of all units.
 
@@ -87,7 +87,7 @@ Receiving movement completion events
 
 Movement itself is performed by the unit, while the Unit Manager coordinates unit state.
 
-Base Unit
+## Base Unit
 
 Represents the common functionality shared by every unit.
 
@@ -103,7 +103,7 @@ Movement completion events
 
 Developers are expected to inherit from BaseUnit to implement custom unit types.
 
-User Interface
+## User Interface
 
 The UI is intentionally modular.
 
