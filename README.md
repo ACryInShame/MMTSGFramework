@@ -19,17 +19,19 @@ The framework is designed around several objectives:
 
 Current Architecture
 
-The framework is organized into specialized managers that each own a specific responsibility.
- Player
-   │
+The framework is organized into specialized managers that each own a specific responsibility. 
+<pre>
+ Player 
+   │ 
   Player Controller
-  ┌─┴──────────────────── Battle HUD / Widgets
-Battle Manager
- ┌─┴─────────────┐
- │               │
-Grid Manager   Unit Manager
-│               │
-Battle Tiles   Base Units
+  ┌─┴──────────────────── Battle HUD / Widgets 
+Battle Manager 
+ ┌─┴────────────────┐ 
+ │                  │ 
+Grid Manager   Unit Manager 
+│                   │ 
+Battle Tiles    Base Units
+</pre>
    
 Player Controller
 
@@ -118,18 +120,20 @@ Command Flow
 
 Gameplay follows a command-driven workflow.
 
+<pre>
 Player Input
+      │ 
+Player Controller 
+      │ 
+ Tactical Command 
+      │ 
+Battle Manager ( Validation) 
       │
-Player Controller
-      │
- Tactical Command
-      │
-Battle Manager ( Validation)
-      │
-Grid / Unit Managers
-      │
-Base Unit
-      │
-Command Complete Event
+Grid / Unit Managers 
+      │ 
+Base Unit 
+      │ 
+Command Complete Event 
+</pre>
 
 This architecture makes future networking significantly easier because player intent can eventually be replicated as commands rather than replicated object references.
