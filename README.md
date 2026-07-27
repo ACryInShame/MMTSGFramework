@@ -20,17 +20,17 @@ The framework is designed around several objectives:
 Current Architecture
 
 The framework is organized into specialized managers that each own a specific responsibility.
-Player
+ Player
    │
-Player Controller
-┌─┴──────────────────── Battle HUD / Widgets
+  Player Controller
+  ┌─┴──────────────────── Battle HUD / Widgets
 Battle Manager
  ┌─┴─────────────┐
  │               │
 Grid Manager   Unit Manager
- │               │
+│               │
 Battle Tiles   Base Units
-
+   
 Player Controller
 
 Responsible for:
