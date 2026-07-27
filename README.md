@@ -37,9 +37,9 @@ Battle Tiles    Base Units
 
 Responsible for:
 
-Receiving player input
-Selecting units and tiles
-Sending gameplay commands to the Battle Manager
+- Receiving player input
+- Selecting units and tiles
+- Sending gameplay commands to the Battle Manager
 
 The Player Controller intentionally avoids implementing game rules. It serves primarily as the interface between the player and the gameplay systems.
 
@@ -49,11 +49,11 @@ The Battle Manager is the central authority of the framework.
 
 Responsibilities include:
 
-Turn validation
-Action validation
-Processing tactical commands
-Coordinating communication between managers
-Maintaining battle state
+- Turn validation
+- Action validation
+- Processing tactical commands
+- Coordinating communication between managers
+- Maintaining battle state
 
 Most gameplay decisions flow through the Battle Manager to prevent individual systems from becoming tightly coupled.
 
@@ -63,13 +63,13 @@ Responsible for the battlefield.
 
 Current responsibilities include:
 
-Grid generation
-Square and hex grid support
-Tile lookup
-Tile highlighting
-Terrain information
-Tile occupancy
-Future pathfinding
+- Grid generation
+- Square and hex grid support
+- Tile lookup
+- Tile highlighting
+- Terrain information
+- Tile occupancy
+- Future pathfinding
 
 Battle Tiles are independent actors that contain terrain and occupancy information while remaining reusable across different maps.
 
@@ -79,11 +79,11 @@ Acts as the owner of all units.
 
 Responsibilities include:
 
-Unit spawning
-Tracking unit locations
-Unit lookup
-Issuing movement requests
-Receiving movement completion events
+- Unit spawning
+- Tracking unit locations
+- Unit lookup
+- Issuing movement requests
+- Receiving movement completion events
 
 Movement itself is performed by the unit, while the Unit Manager coordinates unit state.
 
@@ -93,13 +93,13 @@ Represents the common functionality shared by every unit.
 
 Current functionality includes:
 
-Health
-Damage
-Movement
-Turn state
-Terrain movement costs
-Death events
-Movement completion events
+- Health
+- Damage
+- Movement
+- Turn state
+- Terrain movement costs
+- Death events
+- Movement completion events
 
 Developers are expected to inherit from BaseUnit to implement custom unit types.
 
@@ -109,14 +109,15 @@ The UI is intentionally modular.
 
 Current widgets include:
 
-Battle HUD
-Action Selection Bar
-Unit interaction controls
+- Battle HUD
+- Action Selection Bar
+- Unit Info section
+- Tile Info swction
 
 UI widgets communicate upward through delegates and events rather than directly manipulating gameplay objects.
 
 
-Command Flow
+## Command Flow
 
 Gameplay follows a command-driven workflow.
 
