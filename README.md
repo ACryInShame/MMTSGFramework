@@ -7,6 +7,9 @@ The framework follows an object-oriented, manager-based architecture that emphas
 
 Although multiplayer is not fully implemented in the MVP, the architecture has been designed with multiplayer in mind. Commands are represented as data rather than direct object references wherever practical, allowing future replication without requiring significant refactoring.
 
+## Project Documentation
+- [Project SDLC Document](<Documentation/Modular Multiplayer Tactical Strategy Game Framework Project - SLC Document.md>)
+
 ## Primary Goals
 
 The framework is designed around several objectives:
