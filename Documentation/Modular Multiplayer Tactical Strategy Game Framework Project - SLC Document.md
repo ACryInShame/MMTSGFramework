@@ -202,7 +202,7 @@ criteria below.
 
 # **_GANTT project table_** 
 
-![GANTT project table](images/GANNT project Table.png)
+![GANTT project table](<images/GANNT project Table.png>)
 
 <!-- Start of picture text -->
 Gantt x<br> Typeto fiter @ People 7 Fiter ~ SZ oaseine GB Autort Monts v - + GB @ =<br>x < 222026 32026<br>Project Outine Mey-7 GB prot ontine<br>AgiProjectproject Pan Documentdevelopment MayMay 25 18-24Ju 19 Oy Oy ProjectPan Document Ale project development<br>Creation of pathtincing an. Jun 22-28 CM creation of pants anc ange ning syst<br>(Creation of game round an. wul6-12 Q ] Craton of game round an player tun<br>External Testing in smal gr Jul20-26 - External Testing in small groups and MVP completion<br>Deployment of project int. Ju27 -Aug2 Oy Deploymentof project nto a public platform<br>© Done © NotStarted @ Workingon t<br><!-- End of picture text -->
