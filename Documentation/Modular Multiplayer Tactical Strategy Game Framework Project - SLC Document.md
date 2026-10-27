@@ -1,12 +1,7 @@
-1 
-
 # **Modular Multiplayer Tactical Strategy Game Framework Project** 
 
 Louis J D’Agusto 
-
 Aug 22, 2026 
-
-2 
 
 # **Modular Multiplayer Tactical Strategy Game Framework Project** 
 
@@ -21,8 +16,6 @@ A Game Framework was chosen as a capstone project due to the many different syst
 The development of this project will be created as a framework for building reusable systems and architecture. Simple assets will be used to maintain focus on game systems as the project is not a fully developed game. Plans are to focus on keeping functionality and features simple to develop a minimum viable product known as an MVP. This MVP will be created with the intention that each system will support multiplayer functionality. 
 
 Each gameplay system will undergo development as an Agile milestone, following the full iterative development methodology. These milestones will act as mini projects by going through design, development, testing, and deployment processes. This allows each system to build upon the previous systems while maintaining separate architecture. 
-
-3 
 
 This project is planned for a 13-week development timeline with approximately 15 hours dedicated to development each week. Although a total of 15 weeks is available for completion of the project, the additional two weeks are reserved as extra time to address unexpected development challenges. Due to the complexity networking can add to a project, the multiplayer networking functionality will act as the final Milestone for the project and may be removed if necessary for the timeline. This will allow for development to focus on the core systems for the project 
 
@@ -39,8 +32,6 @@ Visual Studio Code (Microsoft, 2021) with C++ and Unreal Engine development pack
 Microsoft Word (Microsoft, n.d.) and GitHub (Microsoft, 2026) are both used for documentation, GitHub for commit tracking and Word for reports and papers. LibreOffice Draw (LibreOffice, n.d.) is free open-source software used to create flow charts that will assist in designing the interconnection between gameplay systems. Monday.com (Monday.com Ltd, n.d.) website’s free project management features allow for the creation of GANTT charts and will allow access to the chart from either device during development. 
 
 # **_Additional Requirements_** 
-
-4 
 
 As the project is a framework, stand-in assets for UI elements and game entities will be used. The project will utilize free assets from the Unreal Engine Fab Marketplace (Epic Games, n.d.-c) along with any assets for which licenses are already owned. This will allow us to add visualization to the framework without incurring additional costs for development. Research for the project will come from public sources such as the Unreal Engine Documentation page, game development forums, and online tutorials such as the ones seen on YouTube. 
 
@@ -61,8 +52,6 @@ The project will follow a structured timeline ensuring proper planning and proje
    1. Week 3: Unreal Engine and C++ Environment set-up and initial testing 
 
    2. Week 4: Creation of player UI systems and assets 
-
-5 
 
    3. Week 5: Creation of Battle Map grid and generation 
 
@@ -105,8 +94,6 @@ criteria below.
    5. Visual Studio Code can compile and run C++ code 
 
    6. Visual Studio Code can recognize Unreal Engine classes, methods, and variables via the IntelliSense system. 
-
-6 
 
    7. GitHub Desktop can detect changes made to C++ files 
 
@@ -152,8 +139,6 @@ criteria below.
 
 4. Creation of playable unit structures 
 
-7 
-
    1. Units are able to deal and receive damage 2. Units can move across the battle map 
 
    3. Units have a defined movement cost matrix. This is later used in the pathfinding phase. 
@@ -188,8 +173,6 @@ criteria below.
 
 7. Creation of game round and player turns 
 
-8 
-
 1. Allow units to only activate once per round 2. Have round end when all units have activated 3. Have unit activations reset at the end of a round 4. Have players take turns with activations 5. Allow command for a unit to skip their activation. This counts as activating the unit, but the unit does not take any action. 
 
 6. Ensure players cannot control units owned by the other player. 7. If time allows, implement simple computer AI (check range, move, attack. No combat logic) 
@@ -198,11 +181,9 @@ criteria below.
 
 **Figure 1** 
 
-9 
-
 # **_GANTT project table_** 
 
-![GANTT project table](images/GANNT project Table.png)
+![GANTT project table](<images/GANNT project Table.png>)
 
 <!-- Start of picture text -->
 Gantt x<br> Typeto fiter @ People 7 Fiter ~ SZ oaseine GB Autort Monts v - + GB @ =<br>x < 222026 32026<br>Project Outine Mey-7 GB prot ontine<br>AgiProjectproject Pan Documentdevelopment MayMay 25 18-24Ju 19 Oy Oy ProjectPan Document Ale project development<br>Creation of pathtincing an. Jun 22-28 CM creation of pants anc ange ning syst<br>(Creation of game round an. wul6-12 Q ] Craton of game round an player tun<br>External Testing in smal gr Jul20-26 - External Testing in small groups and MVP completion<br>Deployment of project int. Ju27 -Aug2 Oy Deploymentof project nto a public platform<br>© Done © NotStarted @ Workingon t<br><!-- End of picture text -->
@@ -221,8 +202,6 @@ After deploying the project, work will be done to fix any reported bugs and make
 
 # **_Risk / Contingency Planning_** 
 
-10 
-
 As this project has many individual parts that all must work properly in order for the framework to be successful, risk assessment and contingency planning is required. Software projects can face unforeseen delays and large amounts of time can end up dedicated to fixing a single bug. The project developer also has obligations outside of the project that may cause development delays. 
 
 For this project one of the major risks is the solo development workload. The developer currently has a full time job that takes up 40 hours a week. They are also a student who has obligations and assignments outside of this project. This leaves very limited opportunities to work on the project. 
@@ -234,8 +213,6 @@ The project is designed around flexibility to mitigate any difficulties that may
 # **_Planning Conclusion_** 
 
 The planning for this project examines all requirements for its completion and considers the risks involved with having a single developer. Without this process the project could suffer from systems being developed in the wrong order, causing delays in system completion or temporary workarounds becoming permanent problems. This full Agile development plan will ensure that each milestone is met, with room to shrink or grow project scope as needed. Milestones set in this project plan establish realistic expectations in the project’s life cycle and the developer is confident that completion criteria are met. 
-
-11 
 
 # **Iteration 2 (Analysis)** **_Introduction_** 
 
@@ -250,8 +227,6 @@ project. It was determined that the project has two main groups of stakeholders.
 After establishing stakeholders, comparisons of several popular tactical games such as Final Fantasy Tactics (Square Enix, 2025) and BattleTech (Paradox Interactive, 2018) were used to identify stakeholders’ expectations by finding common systems and standards in tactical games.  As this framework will focus on the battle sequences of these games, aspects outside of combat for these games were not considered. From this research it was determined that a Tile-based grid system for the map, Tile terrain system, Individual Unit system that can occupy map Tiles, Unit Command and Combat System, Player Turn System, User Interface system, and battle end check system are all common in these successful games. The research also revealed a few noteworthy aspects of these systems that expanded the scope of some of the planned systems. 
 
 Finally, the planned milestones were examined based on online resources to determine whether each system could be completed within the available development timeline. It was determined that each system should be modular and made with multiplayer functionality from the 
-
-12 
 
 beginning and converting from a single player framework to multiplayer would push the project outside the 15-week timeline. Several planned aspects to systems have been removed and reserved as stretch goals including progression and Equipment Systems. 
 
@@ -269,8 +244,6 @@ These project developers require systems that are maintainable and scalable. A t
 
 A secondary stakeholder group are the end users. These users will not interact with the framework directly like the developers but will interact with the projects these developers make 
 
-13 
-
 with this framework. Therefore, decisions made in the framework’s development will affect the games they will end up purchasing and playing. These users will expect responsive controls, clear user interfaces, reliable combat systems, and consistent game rules. It is this reason that the framework must provide developers with systems capable of supporting these expectations. 
 
 By identifying these two groups, and their expectations of a Tactical Game Framework, the developer was able to refine the goals for the framework and update milestones for the project to match expectations of both groups of stakeholders. 
@@ -282,8 +255,6 @@ The analysis of the framework project led to several functional requirements nec
 Further restrictions such as actions per unit activation or phases known as game rounds, a system is needed to track actions economy and reset action restrictions for units to allow combat to progress. Each combat requires end conditions such as defeating all enemy units, and thus the framework requires a resolution system to determine how combat ends and how the actions of combat affect parts of the game outside the battle map. 
 
 An optional feature of multiplayer, networking, and synchronization systems will allow players to play together locally or over the internet. Even though multiplayer functionality is 
-
-14 
 
 optional, it is part of the design of this framework as not designing each system of the framework with multiplayer functionality will cause multiplayer to not be an option later in development. 
 
@@ -303,8 +274,6 @@ During the analysis research for the Modular Multiplayer tactical strategy game 
 
 A software solution provided by Epic Games simply known as “Turn Based Strategy” (Epic Games, 2025) is a free project on the FAB website. This project features randomly generated maps, player turns and operations, unit and team controls. These features are similar to the ones required by this framework project. Examining the methods used in this free project can act as a jumping 
 
-15 
-
 point to learn from in order to develop this framework without having to build the systems from scratch. This however, will not be an immediate conversion as the project was done in Unreal Engine 4. Since the framework is being developed in Unreal Engine 5, the changes in versions may prevent some of the systems from working. The “Turn Based Strategy” project was also developed using the Unreal Engine Blueprints, not C++ and therefore will act more as reference materials to build ideas from. 
 
 Another solution by the name “Turn-Based Strategy RPG Template” (Phoenix Market, 2025) was also discovered on the Fab marketplace. This project is made using Unreal Engine 5 using Unreal Engine blueprints. This solution costs $99 in order to obtain the rights putting it outside the budget for this project. However, the trailer videos show the capabilities of the solution. The takeaway from this solution is the UI system showing unit turn orders, sound and unit actions, range and pathfinding calculations, and the way the UI provides information for the player. These are wonderful takeaways from this solution even if we are unable to investigate the methods the solution provides these features due to budget constraints. The trailer videos show how important these features are as the developers of the solution made the main part of their showcase videos. This shows that multiple developers are willing to purchase a tactical strategy framework rather than develop those systems internally. 
@@ -314,8 +283,6 @@ The analysis of existing solutions confirmed several feature requirements noted 
 # **_Potential Commercial Interest_** 
 
 The analysis phase for the Modular Multiplayer Tactics Game Framework revealed potential interest from independent game studios, educational institutions, solo developers, and other development teams looking to save time and money on development of strategy games. As discovered when researching other solutions, there is a demand for strategy game frameworks and 
-
-16 
 
 many of these frameworks have features in common. A possible missing outlier is the multiplayer features that this framework will possibly provide. Mentions of this demand were discovered on public game development forum sites such as Reddit. (DragonWarrior008, 2024) 
 
@@ -328,8 +295,6 @@ During the analysis phase, several discoveries were made. By researching tactica
 # **Iteration 3 (Design)** 
 
 During the design phase time was taken to refine the software architecture and determine how it would best support the minimum viable product (MVP) for the Modular Multiplayer Tactical Strategy Game Framework. This was an important step as the framework is intended for reuse by other developers. With the framework being designed to be modular and maintainable, multiple systems must work together while minimizing coupling between them. Incorporating design 
-
-17 
 
 patterns such as the Observer pattern (Gamma et al., 1994), along with object-oriented class associations, was selected to achieve this goal. This approach allows each subsystem to 
 
@@ -348,8 +313,6 @@ integrated into a project. Developers will need a computer with hardware capable
 The framework needs a modular architecture built from independent system managers. Each manager has a single responsibility and communicates with each other subsystem during gameplay. The major systems are Player Controller which handles all player input; and the UI (User Interface) which handles information displayed as an overlay for the player; the Battle Manager to control game flow; Grid Manager to generate and manage the battle map; the Unit Manager which generates, tracks, and commands units. Unit Manager will use a BaseUnit class that future developers can create child classes that inherit from the BaseUnit class, which will allow all systems to continue to function without reworking the Unit Manager. A similar style is used with the Grid Manager, where the BattleTile class is used for each tile in the battle map grid. This structure allows developers to add functionality without affecting preexisting systems, simplifies the testing of each subsystem, and makes future multiplayer functionality easier. 
 
 **Use Cases.** 
-
-18 
 
 As the framework is intended to act as a foundation for the development of tactical strategy 
 
@@ -397,8 +360,6 @@ and reflect the design goals for the minimum viable product (MVP) of the project
 
 architecture. 
 
-19 
-
 # **Preconditions:** 
 
 - Unreal Engine 5 is installed on supported hardware. 
@@ -431,8 +392,6 @@ Developers can save a large amount of development time by using this framework.
 
 Researching, writing, designing, developing, and testing systems can take a very long time. By using the framework, developers can focus on developing the unique aspects of their game and build more content as the framework covers all the underlying systems. 
 
-20 
-
 When it comes to cost, the value of the framework is in the development time saved by development teams not having to create the base functionality that the framework provides. Since the framework can save teams months of development time, that time gained back is not just for the initial, but future projects can continue to provide value far above the initial cost of the framework. This is feasible for developers as it is built on the Unreal Engine 5 platform and uses standard C++ development practices. This allows developers to integrate the framework into projects alongside their available tools and establish workflows. 
 
 The modular design of the framework also allows developers to expand on the initial functionality and create unique games that meet their project's requirements. Developers may also expand on the framework and create their own internal versions with additional features that are best suited for their development process. 
@@ -445,8 +404,6 @@ During the design phase of the project, several software engineering best practi
 
 As this project is an MVP framework used as a foundation for game development, there are relatively few ethical considerations as the project does not directly handle any data. There is 
 
-21 
-
 however a small consideration for the use of third-party assets that will act as placeholders in the project. The development team has licenses for several assets that would make for excellent placeholders. The use of these assets would make for a greater appeal of the framework to potential users. Developers however, may unknowingly leave placeholder assets in their final projects. Because the licenses for these assets do not permit redistribution, only open source and royalty free assets are used in the development of the framework. 
 
 # **_UI Wireframe Layouts_** 
@@ -456,8 +413,7 @@ As the project’s scope is that of an MVP, it does not cover anything outside o
 **Figure 2** 
 
 _Team Selection Screen UI_ 
-
-
+![Team Selection Screen UI Wireframe](<images/Team Selection Screen UI.png>)
 
 <!-- Start of picture text -->
 Highlighted Current Selected Unit<br>Start Battle<br>Unit qUnit Team SelectionUnit Unit [sesa<br>a<br>Selected Unit scrollbar for<br>Information units<br>Unit Unit Unit Unit<br>Unit Unit Unit Unit<br>Icon Icon Icon Icon<br>Selected unl} Selected unl} Selected uniQ¢’ Selected unt<br>For Team For Team For Team For Team<br>icon con icon con<br><!-- End of picture text -->
@@ -466,13 +422,11 @@ Note: This is a wireframe of the proposed design for the Team Selection Screen
 
 The Team Selection Screen allows players to assemble their team rosters before entering the Battle Screen. This screen allows players to review each unit’s statistics and abilities before 
 
-22 
-
 selecting what units they are taking into the battle. Unit information will be updated on the left side of the screen based on what unit the player has selected. The selected unit Icon will be highlighted for quick recognition by players. Players may add the selected unit to the team roster displayed at the bottom of the screen. Players can then select the ‘start battle’ button at the top right of the screen. The button’s location is positioned away from other buttons and icons to reduce the risk of accidental selection by the player while building their team roster. 
 
 **Figure 3** _Battle Screen UI_ 
 
-
+![Battle Screen UI Wireframe](<images/Battle Screen UI.png>)
 
 <!-- Start of picture text -->
 Unit Information a 7 {ferrain Information<br>—<br>» BattleTile| mena<br>; | Vv ann Movement Cost<br>Unit stats and wn<br>> j<br>related Terrain effects<br>information vs / and benefits<br>Nery<br>on<br> eaee ."<br><!-- End of picture text -->
@@ -483,13 +437,11 @@ framework's core gameplay systems. Background image taken directly from project.
 
 The Battle Screen will serve as the primary interface for the players during the MVP of the project. Players will take turns giving commands to units by selecting a unit on screen and then selecting an action to take. Some actions require the player to select a target before executing the action. The left and right information panels update dynamically based on the player’s current 
 
-23 
-
 selection, ensuring that only the relevant unit and terrain information is displayed. When a unit is selected, the Terrain Information panel also displays the information for the terrain tile currently occupied by that unit. 
 
 **Figure 4** **_System Architecture Diagram_** 
 
-
+![System Architecture Diagram](<images/System Architecture Diagram.png>)
 
 <!-- Start of picture text -->
 Pieyes MGass/Object<br>Interfaces<br>1 with a a<br>Gass/Object ———> Class/Object<br>Player Ul ayAssocioies wh Player Controller Connection<br>rN a a<br>' ‘lass/Objact ~~ ~ > Ciass/Object<br>1 Sends Player Actions to<br>1\ | Observer Pattern Connection<br>\ a a<br>i Battle Manager Gass/Object —--—B> Class/Object<br>\<br>} | | Inheritance Connection<br>1 Coordinates with Coordinates with<br>{t<br>\<br>\<br>\Grid Manager Unit Manager<br>\<br>'! ManagesI ManagesI<br>1t+<br>\| custom tie <nInherits from Bale Tie Base Unit © "BeInherits from Custom Unit<br>\ ' i<br>\ i<br>i\<br>'<br>\.—~-~-|—— f ;<br>Broadcasts Update Event -— + —---~---—<br>Creates<br>Developer<br><!-- End of picture text -->
@@ -498,11 +450,9 @@ Note: The Framework System Architecture Diagram illustrates the relationships be
 
 The System Architecture Diagram illustrates how player input is processed through the Player Controller and coordinated by the Battle Manager, which delegates its responsibilities to the Grid Manager and Unit Manager. These managers control the battle map and units while each Unit and Tile broadcasts update events to the Player UI. Developers can extend the framework by creating custom classes that inherit from the BaseUnit and BattleTile classes to create custom units and terrain without modifying the framework's core systems. 
 
-24 
-
 # **Figure 5** **_Class/Object Relationship Diagram_** 
 
-
+![Class/Object Relationship Diagram](<images/ClassObject Relationship Diagram.png>)
 
 <!-- Start of picture text -->
 Key<br>M<br>Class/Object<br>a a<br>Class/Object ———— Class/Object<br>Player UI ——— Player Controller Association<br>J a a<br>Class/Object — — > Class/Object<br>Battle Manager<br>Composition<br>a a<br>Class/Object ---------> Class/Object<br>Inheritance<br>Grid Manager <—— — Unit Manager<br>1i<br>|\<br>Custom Tile <t---- Battle Tile Base Unit "P| Custom Unit<br><!-- End of picture text -->
@@ -515,9 +465,7 @@ Unlike the System Architecture Diagram, this figure focuses on the structural re
 
 _Gameplay Process Flow_ 
 
-25 
-
-
+![Gameplay Process Flow](<images/Gameplay Process Flow.png>)
 
 <!-- Start of picture text -->
 No<br>No<br>Tie No. Yes End Turn Button<br>Unit<br>‘Action Button<br>Yes<br>targettile thetheunit<br>‘occupies<br>No<br>No<br>= ==<br>Player Cancels Selection<br>7<br><!-- End of picture text -->
@@ -545,15 +493,11 @@ _Data Dictionary_
 |BattleTile|Base Class|Parent class for all terrain|Terrain data, occupancy.|
 
 
-
-26 
-
 |**Class**|**Type**|**Description**|**Responsibilities**|
 |---|---|---|---|
 |||tiles.||
 |UnitManager|Manager|Manages all units.|Spawning, movement, tracking.|
 |BaseUnit|Base Class|Parent class for all units.|Combat, movement, statistics.|
-
 
 
 Note: This table summarizes the primary framework classes included in the minimum viable product (MVP). 
@@ -568,8 +512,6 @@ This focus on modularity and expandability added more development time to the pr
 
 During project planning, the development phase was scheduled to span eight weeks. Each week was to focus on a particular milestone so that testing could begin following the completion of each milestone. These milestones were updated and refined during the analysis and design phases prior to the start of implementation. As the goal of the project is to produce a minimum viable product (MVP), the development phase focused on implementing the framework's core systems rather than a feature-complete product. During development, it was determined that the scope of 
 
-27 
-
 several features had to be reduced to meet development timelines. The Agile development cycle helped ensure that this discovery did not hold back development as each part of the framework was made and tested to stand on its own, thus preventing this scope change from creating further delays. 
 
 To help maintain the planned development timeline, a journal (D'Agusto, 2026a) and project checklist (D'Agusto, 2026b) were kept to document the progress of framework development. These tracked completed work, architectural decisions, technical challenges, and milestone progress. These documents helped ensure that implementation remained aligned with the project schedule and provided a record of the development process. 
@@ -582,15 +524,13 @@ The OMEN 16 laptop was obtained to use for development. As the laptop was origin
 
 After all programs were installed, testing of the UE and Visual Studio compilers began and there was an issue with the compilers failing or taking several minutes to compile small changes. After some configuration and research on the Unreal Engine Forums it was discovered that Windows 11 was limiting UE to only use 3GB of memory. The Windows virtual memory settings 
 
-28 
-
 were adjusted to allow UE access to additional memory. This had the desired effect, and UE was able to compile quickly without any further issues. 
 
 Final testing verified that Unreal Engine launched correctly, C++ classes could be created and compiled, IntelliSense recognized Unreal Engine classes, and GitHub Desktop successfully detected repositories and synchronized project changes. Completion of this testing confirmed that the development environment met all planned requirements and was ready for the implementation of the framework's core systems. This testing verified the framework's integration with Unreal Engine's C++ API and Blueprint system, ensuring reliable communication between the engine and framework classes. GitHub Desktop was used to integrate version control into the development workflow. 
 
 # **Figure 7** **_Working Visual Studio Environment_** 
 
-
+![Working Visual Studio Environment](<images/Working Visual Studio Environment.png>)
 
 <!-- Start of picture text -->
 0 MNTSGFamework<br>s eop = Wins a> Ape Soa «<br>= | a<br>ED reasy 10/0= 70 man= WB iisctament= ><br><!-- End of picture text -->
@@ -603,24 +543,19 @@ The User Interface (UI) is the interaction framework between the user and the pr
 
 this stage of development, the functionality to allow users to interact with the framework systems 
 
-29 
-
 and the visual details to give users feedback on their actions were required. This realization brought a significant change to the originally planned UI milestone as both player interaction and the interface would need to be developed together to ensure a user could interact with the systems of the framework. This meant writing a new milestone and requirements focused on user controls from mouse and keyboard, and displaying game feedback for the user via the UI. 
 
 Development began with the UI, as starting with player input would leave nothing to test input feedback against. Using information from GGameDev on YouTube (GGameDev, 2023), the UI was initially built from smaller widgets, which are UE’s display layer objects, that represent repeatable sections such as text boxes for displaying information or buttons to allow user interactions. Then a larger widget called a Heads-Up Display (HUD) was created using the smaller widgets. This allowed changes to be made as needed throughout development without having to modify every individual widget. If an update to the text boxes were needed (which did occur), only the base widget would need the update, and then all other text boxes would be updated along with it. This made the creation and updating of the wireframe designs from the design phase of this project much easier to implement. 
 
 **Figure 8** 
 
+# **_Early work on HUD_** 
+![Early work on HUD](<images/Early work on HUD.png>)
 
-
-<!-- Start of picture text -->
-Early work on HUD<br><!-- End of picture text -->
-
+<!-- Start of picture text -->Early work on HUD<br><!-- End of picture text -->
 After the HUD was completed, work on the user controls was implemented. In UE this 
 
 meant creating an Input Mapping Context (IMC) and individual Input Actions (IA). Input Actions 
-
-30 
 
 define the actions performed by the game, while the Input Mapping Context maps the player's physical inputs, such as a mouse click, to those actions. These actions were assigned to a default IMC and added to the Player Controller class which acts as the manager for user input and screenrelated interactions. Plans to create a main menu screen and implement custom or third-party UI assets were deferred due to the time constraints of the MVP development schedule. 
 
@@ -632,10 +567,9 @@ An Actor Blueprint, which is an Unreal Engine object represented in 3D space, is
 
 # **Figure 9** 
 
-31 
-
 # **_Battle Tile Actor in Unreal Engine_** 
 
+![Battle Tile Actor in Unreal Engine](<images/Battle Tile Actor in Unreal Engine.png>)
 
 
 <!-- Start of picture text -->
@@ -649,8 +583,6 @@ After the Battle Grid Manager’s map generation and tiles were tested and funct
 
 correctly, it was determined that effective camera controls were required to test and interact with the framework. Thus, camera controls were created using the Player-Controlled Cameras in Unreal Engine CPP documentation from Epic’s community (Epic Games, n.d.-f). The implementation of a Player Camera C++ class and actor Blueprint allowed the player to move the camera around following the actor in the 3D space, but without a model for the actor the player would seem to be floating in the air of the game looking down at the battle grid. This implementation provided an effective method for viewing the map during testing and establishing the foundations for camera control for the game framework. 
 
-32 
-
 # **Unit System Development** 
 
 Units represent the player- and AI-controllable actors which are the focus of any game 
@@ -663,8 +595,6 @@ Originally, Unit movement was designed to be handled by the Unit Manager. During
 
 Like the Grid Manager managing Battle Tiles, the Unit Manager manages all Units on the battle grid. The Unit Manager is responsible for creating, destroying, tracking grid positions, and directing actions for each Unit. This acts as a separation from management duties that individual Units do not need control over. Units are tracked by the Unit Manager along with their grid position by using a Map container called TMap built into Unreal Engine (Epic Games, n.d.-e). When a unit 
 
-33 
-
 is created a Transform, which is an Unreal Engine structure which stores an Actor's location, rotation which determines the Actor's facing direction, and scale in 3D space, is passed to the unit creation function as an argument. Unit Manager uses the information to generate a Unit using the Unreal Engine’s Spawn Actor function to generate the Unit object in 3D space. This information is passed to the Unit Manager via the Battle Manager (mentioned later). Destroying a Unit is done by removing the unit from the TMap and calling the Actor destroy function from Unreal Engine that handles the necessary cleanup of the Actor and its associated memory. Unit actions are passed through from the Player Controller or AI to Battle Manager to Unit Manager and lastly to the Unit which takes the action. Passing actions through each manager allows each step to take any necessary intermediate actions. An example would be for the Player Controller to confirm the correct input or Battle Manager to check if the action is valid to take. Although this introduces additional processing steps, it ensures that each subsystem performs only the responsibilities assigned to it, preserving the modular architecture established during the design phase. 
 
 # **Battle Management** 
@@ -673,9 +603,7 @@ The Battle Manager acts as the main controller for the game. It connects Player 
 
 # **Figure 10** 
 
-34 
-
-
+![BattleManager Code Example](<images/BattleManager Code Example.png>)
 
 <!-- Start of picture text -->
 BattleManager Code Example<br>ry MMTSGFamework<br><!-- End of picture text -->
@@ -685,8 +613,6 @@ BattleManager Code Example<br>ry MMTSGFamework<br><!-- End of picture text -->
 Pathfinding was built into the Grid Manager to facilitate Unit movement, range finding, and 
 
 similar functions. When a Unit is selected by a player, the Battle Manager will pass on the Unit information to the Pathfinding functions of the Grid Manager to find possible Tiles the Unit is able to move to. This is done by finding each Tile’s neighbors using a formula described by Patel (Hexagonal grids, 2013). Each neighbor is checked against the Unit’s movement costs based on the terrain of the Tile to ensure it is a valid tile for movement. Range finding was implemented using a modified breadth-first search (Wikipedia contributor, 2026), that incorporates concepts from Dijkstra's algorithm (Wikipedia contributor, 2026) to account for terrain movement costs. These algorithms were discovered during research in pathfinding algorithms on the Red Blob Games website (Patel A. J., 2024). The valid tiles are highlighted by calling the Tile’s SetHighlightState function. This displays to the player valid Tiles for movement. Then when a Move Action is selected by a player, the Battle Manager uses Pathfinding to validate the Move Action and create a path of Tiles for the unit to move to. Path generation was implemented using a modified A* algorithm (Wikipedia contributor, 2026) that also incorporates movement costs when selecting the 
-
-35 
 
 optimal route. The Battle Manager then instructs the Unit to traverse the generated path one Tile at a time. 
 
@@ -699,8 +625,6 @@ Three milestones of Combat System, Game Round (including Player Turns and Battle
 The framework uses multiple managers with single responsibility to facilitate a separation of responsibilities. This, along with the use of the Observer Pattern, keeps each system decoupled from the others. This allows for greater flexibility when modifying existing systems or creating new functionality. These managers also function for reliability by implementing individual validation functions to ensure data passing to and from the managers is usable by the function calls. This helps prevent project crashes and unexpected behavior caused by invalid data. Inheritance through the Base Unit and Battle Tile classes allows developers to expand existing functionality without redeveloping the framework's core systems. This enables the framework to scale to meet the needs of individual game projects. 
 
 Implementation of player inputs, camera controls, and context-sensitive UI allows for a smooth gameplay experience. As this project is a game development framework, inheritance through the Base Unit and Battle Tile classes improves the developer experience by allowing a 
-
-36 
 
 developer to create child classes. This design allows these child classes to integrate directly with the core systems without modifying them. The framework runs locally on individual machines without the need for external services and is designed to support future functionality expansions such as controller support, control remapping, and multiplayer. 
 
@@ -715,8 +639,6 @@ This project has shown the value of goal-focused development. Each change that c
 # **Iteration 5 (Testing)** 
 
 Normally, a project enters a dedicated testing phase in which its features are evaluated to ensure they align with the project's goals. However, this project was developed using Agile methodology. This methodology develops software through iterative milestones. Each milestone’s features are tested before the development of the next milestone begins. Each of the project’s milestones underwent functional testing, integration testing, and regression testing. 
-
-37 
 
 Upon completion of the development phase, the project was submitted for external code 
 
@@ -743,10 +665,6 @@ began on the next iteration. Table 2 below summarizes the functional testing per
 |Development<br>Environment|Launch Unreal Engine,<br>create a C++ project,<br>compile code, verify<br>IntelliSense, and<br>synchronize project<br>with GitHub Desktop.|<br>Development<br>environment functions<br>correctly and supports<br>C++ development.|<br>All components operated<br>successfully and met<br>development<br>requirements.|<br>Pass|
 |User Interface|Create UI widgets,<br>assign input actions,<br>navigate menus, and<br>verify HUD updates.|User input is accepted<br>and the interface<br>updates to reflect<br>player actions.|Core UI systems<br>functioned correctly.<br>Controller support and<br>menu polish were<br>deferred beyond the<br>MVP.|Partial<br>Pass|
 
-
-
-38 
-
 |**Feature Tested **|**Test Procedure**|**Expected Result**|**Actual Result**|**Status**|
 |---|---|---|---|---|
 |Battle Grid<br>Generation|Generate battle maps<br>of different sizes and<br>verify tile creation,<br>terrain assignment, and<br>grid accessibility.|<br>Grid generates<br>correctly with<br>accessible tile<br>information.|Battle maps generated<br>successfully with<br>randomized terrain and<br>accessible tile data.|Pass|
@@ -766,7 +684,6 @@ Successful integration testing demonstrated that each subsystem communicated wit
 
 related systems properly. The Player Controller, Battle Manager, Grid Manager, Unit Manager, Base 
 
-39 
 
 Unit, Battle Tile, and Battle HUD were able to exchange information as designed without 
 
@@ -803,8 +720,6 @@ re-tested to ensure that changes made during refactoring did not introduce new b
 
 _Project Regression Testing_ 
 
-40 
-
 |Refactored<br>Feature|Change Made|Regression Test Performed|Result|
 |---|---|---|---|
 |Unit Movement|Movement responsibility transferred to<br>BaseUnit from UnitManager|Verified units still moved<br>correctly and completed<br>movement events.|Pass|
@@ -815,14 +730,12 @@ _Project Regression Testing_
 |Class<br>Responsibilities|Responsibilities redistributed between<br>managers and gameplay classes during<br>development|Verified existing gameplay<br>systems continued functioning<br>after refactoring.|<br>Pass|
 
 
-
 # **_External Code Review_** 
 
 At the completion of the final development milestone’s testing, the entire project was presented to the Philly Game Mechanics organization, and a request was made for a programmer to conduct a peer review of the project. The review was performed by Jerry Mras-Swan (personal communication, July 27, 2026), another Unreal Engine developer and member of the Philly Game Mechanics community. He reviewed the class responsibilities, architecture, coding practices, and Unreal Engine API integration. Jerry summarized his overall impression by stating, _"It works well!"_ He further described the overall architecture as well organized and functional. Jerry also noted there were opportunities for improvement that would better align the framework with Unreal Engine’s best practices. These recommendations primarily focused on reducing coupling between classes, improving Unreal Engine API usage, and enhancing the framework’s designer workflow. 
 
 As the project focuses on a functional minimum viable product (MVP), the recommendations were deferred as post-MVP improvements rather than immediate corrections. 
 
-41 
 
 Implementing these recommendations at this time would introduce additional delays to the project's timeline with the possibility of missing the project deadlines. 
 
@@ -847,14 +760,12 @@ _Project_ Unresolved Issues
 |UI polish incomplete|Interface is functional but lacks final<br>visual polish and planned widgets.|Improve after gameplay<br>systems are finalized.|
 
 
-
 # **_Testing Reflection_** 
 
 Ensuring testing was completed throughout the development processes prevented bugs 
 
 introduced earlier in development from causing cascading issues throughout the project. Preventing 
 
-42 
 
 these cascades helped ensure that the project kept to a reasonable schedule, even as delays were encountered. A cascading event such as leaving unit movement in Unit Manager could have caused issues with pathfinding or other ability systems. This then would cause Unit Manager to need to act on every possible ability instead of forwarding commands. 
 
@@ -868,7 +779,6 @@ The completion of the MVP project also provided a better understanding of projec
 
 This framework project was designed as a Minimum Viable Product (MVP) to validate its design and architecture before initiating full-scale development. The project is not a self-contained software application, but a reusable framework that other developers can extend upon to create their 
 
-43 
 
 own tactical strategy games. Due to these distinctions, the implementation and maintenance phase of the project does not follow the standard expectations of deploying completed software. At this stage, the framework provides the fundamentals for all the core mechanics required for a tactical strategy game. Therefore, this phase focuses on preparing the framework for long-term development, future distribution, and continued documentation beyond the completion of the capstone project. 
 
@@ -884,9 +794,9 @@ The project will continue to be distributed through a GitHub repository (Microso
 
 # **Figure 11** 
 
-44 
-
 # **_GitHub Repository for Project_** 
+
+![GitHub Repository for Project](<images/GitHub Repository for Project.png>)
 
 
 
@@ -914,9 +824,6 @@ extend and maintain changes to the framework. As the project is currently in an 
 |Project Checklist|Tracks milestone completion, feature status, and deferred|
 
 
-
-45 
-
 # **Document** 
 
 # **Purpose** 
@@ -925,19 +832,16 @@ functionality. GitHub Repository Maintains source code, version history, and pro
 
 # **Figure 12** **_Project Checklist_** 
 
-
+![Project Checklist](<images/Project Checklist.png>)
 
 <!-- Start of picture text -->
 Modular Multiplayer Tactical Strategy. @ Share te +<br>Modular Multiplayer Tactical<br>Strategy Game Framework =<br>3) Project Notes<br>Project Requirements<br>key<br><!-- End of picture text -->
 
-Note: Project Checklist kept on Notion to ensure project kept on track and milestone requirements 
-
-were met 
+Note: Project Checklist kept on Notion to ensure project kept on track and milestone requirements were met 
 
 # **Figure 13** **_Project Work Notes_** 
 
-46 
-
+![Project Work Notes](<images/Project Work Notes.png>)
 
 
 <!-- Start of picture text -->
@@ -951,8 +855,6 @@ The documents provide the required information for continued development of the
 
 framework. As additional features are implemented, new documents will be created to include all information required to use and extend the framework. 
 
-47 
-
 # **Table 7** 
 
 # **_Planned Future Framework Documentation_** 
@@ -965,14 +867,11 @@ framework. As additional features are implemented, new documents will be created
 |Developer Guide|Will describe how to extend the framework by creating new units,<br>tiles, commands, and gameplay systems.|
 
 
-
 # **_Developer Support and Maintenance_** 
 
 Unlike traditional software applications, this game development framework is intended for software developers who are expected to be familiar with their development environment. As a result, there are no plans for formal training for this project. Instead, comprehensive documentation will be created as the framework matures beyond the MVP. This documentation will be provided alongside the distribution of the framework. This approach is consistent with common practices used by commercial game development frameworks distributed through the Epic Games FAB marketplace (Epic Games, 2025). 
 
 Likewise, the framework will not include a traditional help desk. Following common practices of the FAB marketplace, the team will not provide any Help Desk support either (Epic Games, 2025). Developers will instead be able to submit questions, bug reports, feature requests, and general feedback through the framework's FAB Marketplace page. This feedback will be reviewed throughout future development and may be incorporated into later releases to resolve bugs, improve usability, and add additional features to the framework. This strategy follows the Agile development methodology by allowing community feedback to influence future iterations of the framework (Beck et al., 2001). 
-
-48 
 
 # **_Future Development Roadmap_** 
 
@@ -991,14 +890,12 @@ Following the completion of this project, the framework will continue developmen
 |Marketplace Release|Low|Prepare the framework for publication on the Epic<br>Games FAB Marketplace.|
 
 
-
 # **_Implementing and Maintenance Reflection_** 
 
 Completing the MVP of the framework demonstrated that the project was built on a solid 
 
 architectural foundation that supports the core game mechanics. Throughout development, many of the original design plans were modified and evolved as new challenges were encountered. The modular architecture allowed these changes to be made without requiring a complete redesign, validating the decision to develop flexibility into the project early in the development. 
 
-49 
 
 The implementation phase demonstrated that completing an MVP project is not the end of development, but the beginning of the framework's transition out of the MVP. Many planned features remain before the framework is ready for public release, establishing clear milestones for future development. By successfully validating the framework as a proof of concept the MVP enables future development to focus on expanding functionality and usability of the framework rather than designing core systems. 
 
@@ -1010,13 +907,9 @@ Ethical considerations were included in the development of the MMTSG Framework. 
 
 The main ethical focus for this project was producing quality reusable software and respecting intellectual property. Every aspect of the framework was designed and developed to meet the high standard of software quality, even though it was intended as an MVP project. This included changes made to ensure reusability, framework functionality, and expandability, along with 
 
-50 
-
 improving code readability through comments and variable/function naming conventions. These practices are consistent with principles described in Clean Code (Martin, 2008). A major design choice was also made early regarding intellectual property. As the framework will eventually be distributed to other developers, it became apparent that using assets with this project could cause issues concerning rights and ownership. These assets would have made the project look and feel cleaner and more complete. However, improvements to the visual presentation of the MVP were not worth the risk of future developers unknowingly using assets in ways that could violate the assets’ licensing requirements. 
 
 Future development will continue to keep these and other ethical concerns in consideration to ensure the framework meets a high standard of ethical responsibility. Maintaining these ethical standards is particularly important as the MMTSG Framework moves toward public distribution. As the first large software project the developer intends to distribute, maintaining software quality, respecting intellectual property, and being transparent about the framework’s capabilities and limitations will be important in establishing trust with developers who may use the framework. 
-
-51 
 
 # **References** 
 
@@ -1046,8 +939,6 @@ https://www.reddit.com/r/gamedev/comments/1aj24sy/best_engine_framework_for_turn
 
 - Epic Games. (n.d.-c). _FAB the creator-first marketplace._ Retrieved May 19, 2026, from FAB. https://www.fab.com 
 
-52 
-
 - Epic Games. (n.d.-d). _Hardware and software specifications for Unreal_ . Retrieved June 23, 2026, 
 
    - from Epic Games Developer. 
@@ -1071,8 +962,6 @@ https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-7-document
 - GGameDev. (2023, November 11). _Getting into C++ with Unreal Engine - Part 6 - User Interface (A) [Video]_ . Retrieved July 10, 2026, from YouTube.. https://www.youtube.com/watch? v=ErVcuQXTm_c 
 
 - LibreOffice. (n.d.). _LibreOffice is an open source office suite created by you, for you._ Retrieved May 19, 2026, from https://www.libreoffice.org/ 
-
-53 
 
 - Martin, R. C. (2008). _Clean Code: A Handbook of Agile Software Craftsmanship._ Pearson 
 
@@ -1106,11 +995,8 @@ https://www.redblobgames.com/pathfinding/a-star/introduction.html
 
    - Wikipedia. https://en.wikipedia.org/wiki/A*_search_algorithm 
 
-54 
-
 Wikipedia contributor. (2026, July 8). _Breadth-first search_ . Retrieved July 10, 2026, from 
 
 Wikipedia. https://en.wikipedia.org/wiki/Breadth-first_search 
 
 Wikipedia contributor. (2026, June 2). _Dijkstra’s algorithm_ . Retrieved July 10, 2026, from Wikipedia. https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm 
-
